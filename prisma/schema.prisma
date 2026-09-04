@@ -1,0 +1,137 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      String   // "ADMIN", "TEACHER", "STUDENT"
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  studentProfile StudentProfile?
+  teacherProfile TeacherProfile?
+}
+
+model StudentProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rollNumber  String   @unique
+  classId     String
+  class       Class    @relation(fields: [classId], references: [id])
+  gender      String   @default("Not specified")
+  dob         String?
+  phone       String?
+  parentName  String?
+  parentPhone String?
+  address     String?
+
+  attendances Attendance[]
+  marks       Mark[]
+  feeInvoices FeeInvoice[]
+}
+
+model TeacherProfile {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employeeId    String    @unique
+  department    String
+  designation   String    @default("Instructor")
+  phone         String?
+  qualification String?
+
+  classes       Class[]
+  subjects      Subject[]
+}
+
+model Class {
+  id        String          @id @default(cuid())
+  name      String          // e.g. "Grade 10 - Section A"
+  grade     String          // e.g. "10"
+  section   String          // e.g. "A"
+  room      String?
+  teacherId String?
+  teacher   TeacherProfile? @relation(fields: [teacherId], references: [id])
+
+  students  StudentProfile[]
+  subjects  Subject[]
+  exams     Exam[]
+}
+
+model Subject {
+  id        String          @id @default(cuid())
+  name      String          // e.g. "Mathematics"
+  code      String          // e.g. "MATH101"
+  classId   String
+  class     Class           @relation(fields: [classId], references: [id], onDelete: Cascade)
+  teacherId String?
+  teacher   TeacherProfile? @relation(fields: [teacherId], references: [id])
+
+  marks     Mark[]
+}
+
+model Attendance {
+  id        String         @id @default(cuid())
+  date      String         // YYYY-MM-DD
+  studentId String
+  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  classId   String
+  status    String         // "PRESENT", "ABSENT", "LATE"
+  remarks   String?
+  createdAt DateTime       @default(now())
+
+  @@unique([studentId, date])
+}
+
+model Exam {
+  id        String   @id @default(cuid())
+  name      String   // e.g. "Mid-Term Examination 2026"
+  term      String   // e.g. "Term 1"
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id], onDelete: Cascade)
+  startDate String?
+  endDate   String?
+  createdAt DateTime @default(now())
+
+  marks     Mark[]
+}
+
+model Mark {
+  id            String         @id @default(cuid())
+  examId        String
+  exam          Exam           @relation(fields: [examId], references: [id], onDelete: Cascade)
+  studentId     String
+  student       StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subjectId     String
+  subject       Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  marksObtained Float
+  maxMarks      Float          @default(100)
+  grade         String         // "A+", "A", "B", "C", "F"
+  remarks       String?
+
+  @@unique([examId, studentId, subjectId])
+}
+
+model FeeInvoice {
+  id            String         @id @default(cuid())
+  invoiceNumber String         @unique
+  studentId     String
+  student       StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  title         String         // e.g. "Semester Tuition Fee"
+  amount        Float
+  paidAmount    Float          @default(0)
+  dueDate       String         // YYYY-MM-DD
+  status        String         // "PAID", "PENDING", "OVERDUE", "PARTIAL"
+  paymentDate   String?
+  paymentMethod String?
+  createdAt     DateTime       @default(now())
+}
