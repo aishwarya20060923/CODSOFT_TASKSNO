@@ -73,9 +73,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 | Role | Name | Email / Roll | Key Permissions |
 | :--- | :--- | :--- | :--- |
-| **Administrator** | Dr. Sarah Jenkins | `admin@edumanage.edu` | Full institutional oversight, admissions, faculty, and fee accounting |
-| **Teacher** | Prof. Robert Lang | `teacher.math@edumanage.edu` | Class advisory, daily attendance register, exam grading |
-| **Student** | Alex Morgan | `STU-2026-001` | Grades transcript, attendance compliance, fee payment portal |
+| **Administrator** | Dr. Anandita Verma | `admin@edumanage.edu.in` | Full institutional oversight, admissions, faculty, and fee accounting |
+| **Teacher** | Prof. Rajesh Sharma | `rajesh.sharma@edumanage.edu.in` | Class advisory, daily attendance register, exam grading |
+| **Student** | Aarav Sharma | `STU-2026-001` | Grades transcript, attendance compliance, UPI/Net Banking fee payment portal |
 
 ---
 
