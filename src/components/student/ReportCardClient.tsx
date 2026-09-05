@@ -167,13 +167,13 @@ export default function ReportCardClient({
         <div className="mt-12 pt-8 border-t border-slate-200 grid grid-cols-3 gap-6 text-center text-xs text-slate-500">
           <div>
             <div className="h-10 border-b border-slate-300 w-32 mx-auto mb-1 flex items-end justify-center font-serif italic text-slate-800 text-sm">
-              Robert Lang
+              Prof. Rajesh Sharma
             </div>
             <p className="font-semibold text-slate-700">Class Teacher</p>
           </div>
           <div>
             <div className="h-10 border-b border-slate-300 w-32 mx-auto mb-1 flex items-end justify-center font-serif italic text-slate-800 text-sm">
-              Sarah Jenkins
+              Dr. Anandita Verma
             </div>
             <p className="font-semibold text-slate-700">Dean of Academics</p>
           </div>

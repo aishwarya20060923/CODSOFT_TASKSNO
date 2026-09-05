@@ -55,19 +55,19 @@ export default function Sidebar() {
   const roleMeta = {
     admin: {
       title: 'Administrator',
-      subtitle: 'Dr. Sarah Jenkins',
+      subtitle: 'Dr. Anandita Verma',
       badge: 'Admin Access',
       badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-200',
     },
     teacher: {
       title: 'Faculty Portal',
-      subtitle: 'Prof. Robert Lang (Math)',
+      subtitle: 'Prof. Rajesh Sharma (Math)',
       badge: 'Teacher Access',
       badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
     },
     student: {
       title: 'Student Portal',
-      subtitle: 'Alex Morgan (STU-001)',
+      subtitle: 'Aarav Sharma (STU-001)',
       badge: 'Student Access',
       badgeColor: 'bg-purple-100 text-purple-800 border-purple-200',
     },

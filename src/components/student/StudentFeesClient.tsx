@@ -200,28 +200,28 @@ export default function StudentFeesClient({ invoices }: { invoices: FeeInvoiceIt
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <button
                   type="button"
-                  onClick={() => setPaymentMethod('Online Debit Card')}
+                  onClick={() => setPaymentMethod('UPI (GPay / PhonePe)')}
                   className={`p-3 rounded-xl border text-left font-medium transition ${
-                    paymentMethod === 'Online Debit Card'
+                    paymentMethod.startsWith('UPI')
                       ? 'border-purple-600 bg-purple-50 text-purple-900'
                       : 'border-slate-200 bg-white text-slate-700'
                   }`}
                 >
-                  <p className="font-semibold">Credit/Debit Card</p>
-                  <p className="text-[10px] text-slate-400">Visa / Mastercard</p>
+                  <p className="font-semibold">UPI Payment</p>
+                  <p className="text-[10px] text-slate-400">GPay / PhonePe / Paytm</p>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => setPaymentMethod('Net Banking')}
+                  onClick={() => setPaymentMethod('Net Banking (SBI / HDFC)')}
                   className={`p-3 rounded-xl border text-left font-medium transition ${
-                    paymentMethod === 'Net Banking'
+                    paymentMethod.startsWith('Net Banking')
                       ? 'border-purple-600 bg-purple-50 text-purple-900'
                       : 'border-slate-200 bg-white text-slate-700'
                   }`}
                 >
-                  <p className="font-semibold">Net Banking</p>
-                  <p className="text-[10px] text-slate-400">Instant ACH Transfer</p>
+                  <p className="font-semibold">Net Banking / RuPay</p>
+                  <p className="text-[10px] text-slate-400">SBI, HDFC, ICICI & RuPay</p>
                 </button>
               </div>
 

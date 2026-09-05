@@ -63,7 +63,7 @@ export default async function AdminDashboardPage() {
             Institutional Administration Overview
           </h1>
           <p className="mt-2 text-slate-300 text-sm md:text-base leading-relaxed">
-            Welcome back, Dr. Sarah Jenkins. Real-time institutional telemetry, active enrollments,
+            Welcome back, Dr. Anandita Verma. Real-time institutional telemetry, active enrollments,
             faculty deployments, and fee realization metrics.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">

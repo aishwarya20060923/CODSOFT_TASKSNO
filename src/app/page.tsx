@@ -59,7 +59,7 @@ export default function LandingPage() {
                 <div className="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-600 space-y-1">
                   <p className="flex items-center gap-1.5 font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-                    Dr. Sarah Jenkins (Demo Admin)
+                    Dr. Anandita Verma (Dean & Admin)
                   </p>
                 </div>
               </div>
@@ -90,7 +90,7 @@ export default function LandingPage() {
                 <div className="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-600 space-y-1">
                   <p className="flex items-center gap-1.5 font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    Prof. Robert Lang (Math Dept Head)
+                    Prof. Rajesh Sharma (HOD Mathematics)
                   </p>
                 </div>
               </div>
@@ -121,7 +121,7 @@ export default function LandingPage() {
                 <div className="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-600 space-y-1">
                   <p className="flex items-center gap-1.5 font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-purple-500" />
-                    Alex Morgan (Roll: STU-2026-001)
+                    Aarav Sharma (Roll: STU-2026-001)
                   </p>
                 </div>
               </div>

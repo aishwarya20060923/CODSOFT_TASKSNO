@@ -14,23 +14,23 @@ async function main() {
   await prisma.class.deleteMany();
   await prisma.user.deleteMany();
 
-  console.log('Seeding Users and Profiles...');
+  console.log('Seeding Users and Profiles with Indian names...');
 
-  // 1. Admin User
+  // 1. Admin User (Indian)
   const adminUser = await prisma.user.create({
     data: {
-      name: 'Dr. Sarah Jenkins',
-      email: 'admin@edumanage.edu',
+      name: 'Dr. Anandita Verma',
+      email: 'admin@edumanage.edu.in',
       role: 'ADMIN',
       avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
     },
   });
 
-  // 2. Teacher Users
+  // 2. Teacher Users (Indian Faculty)
   const teacher1User = await prisma.user.create({
     data: {
-      name: 'Prof. Robert Lang',
-      email: 'teacher.math@edumanage.edu',
+      name: 'Prof. Rajesh Sharma',
+      email: 'rajesh.sharma@edumanage.edu.in',
       role: 'TEACHER',
       avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
     },
@@ -38,8 +38,8 @@ async function main() {
 
   const teacher2User = await prisma.user.create({
     data: {
-      name: 'Dr. Elena Rostova',
-      email: 'teacher.sci@edumanage.edu',
+      name: 'Dr. Sunita Rao',
+      email: 'sunita.rao@edumanage.edu.in',
       role: 'TEACHER',
       avatar: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=150&auto=format&fit=crop&q=80',
     },
@@ -47,8 +47,8 @@ async function main() {
 
   const teacher3User = await prisma.user.create({
     data: {
-      name: 'Ms. Clara Oswald',
-      email: 'teacher.eng@edumanage.edu',
+      name: 'Ms. Priya Nair',
+      email: 'priya.nair@edumanage.edu.in',
       role: 'TEACHER',
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
     },
@@ -58,10 +58,10 @@ async function main() {
     data: {
       userId: teacher1User.id,
       employeeId: 'EMP-MATH-101',
-      department: 'Mathematics',
-      designation: 'Department Head & Sr. Professor',
-      phone: '+1 (555) 234-5671',
-      qualification: 'Ph.D. in Applied Mathematics',
+      department: 'Department of Mathematics',
+      designation: 'Head of Department & Professor',
+      phone: '+91 98450 23456',
+      qualification: 'Ph.D. in Applied Mathematics (IIT Delhi)',
     },
   });
 
@@ -69,10 +69,10 @@ async function main() {
     data: {
       userId: teacher2User.id,
       employeeId: 'EMP-SCI-102',
-      department: 'Science & Physics',
+      department: 'Department of Physics & Chemistry',
       designation: 'Associate Professor',
-      phone: '+1 (555) 345-6782',
-      qualification: 'M.Sc. in Physics & Quantum Mechanics',
+      phone: '+91 98765 43210',
+      qualification: 'M.Sc., Ph.D. in Physics (IISc Bangalore)',
     },
   });
 
@@ -80,17 +80,17 @@ async function main() {
     data: {
       userId: teacher3User.id,
       employeeId: 'EMP-HUM-103',
-      department: 'Humanities & English',
-      designation: 'Senior Lecturer',
-      phone: '+1 (555) 456-7893',
-      qualification: 'M.A. in English Literature',
+      department: 'Department of English Literature',
+      designation: 'Senior Assistant Professor',
+      phone: '+91 98111 22334',
+      qualification: 'M.A., M.Phil in English (Delhi University)',
     },
   });
 
   // 3. Classes
   const class10A = await prisma.class.create({
     data: {
-      name: 'Grade 10 - Section A',
+      name: 'Class 10 - Section A',
       grade: '10',
       section: 'A',
       room: 'Hall 101',
@@ -100,7 +100,7 @@ async function main() {
 
   const class10B = await prisma.class.create({
     data: {
-      name: 'Grade 10 - Section B',
+      name: 'Class 10 - Section B',
       grade: '10',
       section: 'B',
       room: 'Hall 102',
@@ -110,7 +110,7 @@ async function main() {
 
   const class12A = await prisma.class.create({
     data: {
-      name: 'Grade 12 - Advanced STEM',
+      name: 'Class 12 - PCM & CS',
       grade: '12',
       section: 'A',
       room: 'Lab 205',
@@ -164,79 +164,79 @@ async function main() {
     },
   });
 
-  // 5. Students in Class 10A
+  // 5. Students in Class 10A (Indian Names)
   const studentData = [
     {
-      name: 'Alex Morgan',
-      email: 'alex.morgan@student.edumanage.edu',
+      name: 'Aarav Sharma',
+      email: 'aarav.sharma@student.edumanage.edu.in',
       roll: 'STU-2026-001',
       gender: 'Male',
       dob: '2009-04-12',
-      phone: '+1 (555) 789-0011',
-      parentName: 'Thomas Morgan',
-      parentPhone: '+1 (555) 998-1122',
-      address: '742 Evergreen Terrace, Springfield',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    },
-    {
-      name: 'Sophia Chen',
-      email: 'sophia.chen@student.edumanage.edu',
-      roll: 'STU-2026-002',
-      gender: 'Female',
-      dob: '2009-08-23',
-      phone: '+1 (555) 789-0022',
-      parentName: 'David Chen',
-      parentPhone: '+1 (555) 998-2233',
-      address: '124 Blossom Hill, Silicon Valley',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
-    },
-    {
-      name: 'Marcus Rashford',
-      email: 'marcus.r@student.edumanage.edu',
-      roll: 'STU-2026-003',
-      gender: 'Male',
-      dob: '2009-02-15',
-      phone: '+1 (555) 789-0033',
-      parentName: 'Robert Rashford',
-      parentPhone: '+1 (555) 998-3344',
-      address: '10 Old Trafford Road, Manchester',
+      phone: '+91 98201 12345',
+      parentName: 'Vikram Sharma',
+      parentPhone: '+91 98201 54321',
+      address: 'Flat 402, Shanti Niketan, Bandra West, Mumbai',
       avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
     },
     {
-      name: 'Emily Watson',
-      email: 'emily.w@student.edumanage.edu',
-      roll: 'STU-2026-004',
+      name: 'Ananya Iyer',
+      email: 'ananya.iyer@student.edumanage.edu.in',
+      roll: 'STU-2026-002',
       gender: 'Female',
-      dob: '2009-11-05',
-      phone: '+1 (555) 789-0044',
-      parentName: 'Sarah Watson',
-      parentPhone: '+1 (555) 998-4455',
-      address: '42 Baker Street, London',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+      dob: '2009-08-23',
+      phone: '+91 98450 67890',
+      parentName: 'Suresh Iyer',
+      parentPhone: '+91 98450 98765',
+      address: '14, Indiranagar 100ft Road, Bengaluru',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     },
     {
-      name: 'David Kim',
-      email: 'david.kim@student.edumanage.edu',
-      roll: 'STU-2026-005',
+      name: 'Rohan Verma',
+      email: 'rohan.verma@student.edumanage.edu.in',
+      roll: 'STU-2026-003',
       gender: 'Male',
-      dob: '2009-06-30',
-      phone: '+1 (555) 789-0055',
-      parentName: 'Joon Kim',
-      parentPhone: '+1 (555) 998-5566',
-      address: '88 Gangnam Blvd, Metro City',
+      dob: '2009-02-15',
+      phone: '+91 98101 23456',
+      parentName: 'Alok Verma',
+      parentPhone: '+91 98101 65432',
+      address: 'B-45, Greater Kailash Part 1, New Delhi',
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
     },
     {
-      name: 'Aaliyah Patel',
-      email: 'aaliyah.p@student.edumanage.edu',
+      name: 'Diya Patel',
+      email: 'diya.patel@student.edumanage.edu.in',
+      roll: 'STU-2026-004',
+      gender: 'Female',
+      dob: '2009-11-05',
+      phone: '+91 98250 34567',
+      parentName: 'Mahesh Patel',
+      parentPhone: '+91 98250 76543',
+      address: '7, Satellite Road, Ahmedabad, Gujarat',
+      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+    },
+    {
+      name: 'Arjun Reddy',
+      email: 'arjun.reddy@student.edumanage.edu.in',
+      roll: 'STU-2026-005',
+      gender: 'Male',
+      dob: '2009-06-30',
+      phone: '+91 98490 45678',
+      parentName: 'Venkat Reddy',
+      parentPhone: '+91 98490 87654',
+      address: 'Road No 36, Jubilee Hills, Hyderabad',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+    },
+    {
+      name: 'Kavya Nair',
+      email: 'kavya.nair@student.edumanage.edu.in',
       roll: 'STU-2026-006',
       gender: 'Female',
       dob: '2009-09-18',
-      phone: '+1 (555) 789-0066',
-      parentName: 'Vikram Patel',
-      parentPhone: '+1 (555) 998-6677',
-      address: '500 Tech Park Way, Austin',
-      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&auto=format&fit=crop&q=80',
+      phone: '+91 98470 56789',
+      parentName: 'Gopinath Nair',
+      parentPhone: '+91 98470 98765',
+      address: 'Green Meadows, Panampilly Nagar, Kochi, Kerala',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
     },
   ];
 
@@ -268,7 +268,7 @@ async function main() {
     createdStudents.push({ user, profile });
   }
 
-  // 6. Seed Attendance (Past 8 School Days)
+  // 6. Seed Attendance (Past 10 School Days)
   const schoolDates = [
     '2026-08-24',
     '2026-08-25',
@@ -286,15 +286,14 @@ async function main() {
     for (let i = 0; i < createdStudents.length; i++) {
       const student = createdStudents[i];
       let status = 'PRESENT';
-      let remarks: string | null = 'On time';
+      let remarks: string | null = 'Present on time';
 
-      // Realistic variation
       if (i === 2 && date === '2026-08-27') {
         status = 'ABSENT';
         remarks = 'Medical leave';
       } else if (i === 4 && (date === '2026-08-28' || date === '2026-09-02')) {
         status = 'LATE';
-        remarks = 'Bus delay';
+        remarks = 'School bus delayed';
       } else if (i === 5 && date === '2026-08-31') {
         status = 'ABSENT';
         remarks = 'Family emergency';
@@ -325,7 +324,6 @@ async function main() {
 
   const subjects = [subMath, subPhysics, subChemistry, subEnglish, subCS];
 
-  // Grade calculator helper
   const getGrade = (marks: number) => {
     if (marks >= 90) return 'A+';
     if (marks >= 80) return 'A';
@@ -336,16 +334,16 @@ async function main() {
   };
 
   const sampleMarksDistribution: Record<string, number[]> = {
-    'STU-2026-001': [95, 91, 88, 92, 98], // Alex Morgan (Honor roll)
-    'STU-2026-002': [98, 96, 94, 89, 95], // Sophia Chen
-    'STU-2026-003': [78, 82, 75, 84, 88], // Marcus
-    'STU-2026-004': [88, 85, 90, 94, 91], // Emily
-    'STU-2026-005': [68, 72, 70, 74, 80], // David
-    'STU-2026-006': [84, 86, 82, 88, 85], // Aaliyah
+    'STU-2026-001': [96, 92, 90, 94, 98], // Aarav Sharma (Topper / Merit)
+    'STU-2026-002': [98, 95, 94, 91, 96], // Ananya Iyer
+    'STU-2026-003': [78, 82, 75, 84, 88], // Rohan Verma
+    'STU-2026-004': [88, 85, 90, 94, 91], // Diya Patel
+    'STU-2026-005': [68, 72, 70, 74, 80], // Arjun Reddy
+    'STU-2026-006': [84, 86, 82, 88, 85], // Kavya Nair
   };
 
   for (const st of createdStudents) {
-    const marksArr = sampleMarksDistribution[st.profile.rollNumber] || [80, 80, 80, 80, 80];
+    const marksArr = sampleMarksDistribution[st.profile.rollNumber] || [85, 85, 85, 85, 85];
     for (let j = 0; j < subjects.length; j++) {
       const score = marksArr[j];
       await prisma.mark.create({
@@ -356,135 +354,136 @@ async function main() {
           marksObtained: score,
           maxMarks: 100,
           grade: getGrade(score),
-          remarks: score >= 90 ? 'Outstanding Performance' : score >= 80 ? 'Very Good' : 'Satisfactory',
+          remarks: score >= 90 ? 'Outstanding Academic Performance' : score >= 80 ? 'Very Good' : 'Satisfactory',
         },
       });
     }
   }
 
-  // 8. Seed Fee Invoices
-  const alexProfile = createdStudents[0].profile;
-  const sophiaProfile = createdStudents[1].profile;
-  const marcusProfile = createdStudents[2].profile;
-  const emilyProfile = createdStudents[3].profile;
-  const davidProfile = createdStudents[4].profile;
-  const aaliyahProfile = createdStudents[5].profile;
+  // 8. Seed Fee Invoices in Indian Rupees (₹)
+  const aaravProfile = createdStudents[0].profile;
+  const ananyaProfile = createdStudents[1].profile;
+  const rohanProfile = createdStudents[2].profile;
+  const diyaProfile = createdStudents[3].profile;
+  const arjunProfile = createdStudents[4].profile;
+  const kavyaProfile = createdStudents[5].profile;
 
-  // Alex invoices (Primary demo student)
+  // Aarav Sharma Invoices (Demo Student)
   await prisma.feeInvoice.create({
     data: {
       invoiceNumber: 'INV-2026-001',
-      studentId: alexProfile.id,
-      title: 'Fall Semester 2026 Tuition Fee',
-      amount: 1450.0,
-      paidAmount: 1450.0,
+      studentId: aaravProfile.id,
+      title: 'Fall Semester Tuition & Academic Fee',
+      amount: 45000.0,
+      paidAmount: 45000.0,
       dueDate: '2026-08-15',
       status: 'PAID',
       paymentDate: '2026-08-12',
-      paymentMethod: 'Debit Card (Stripe)',
+      paymentMethod: 'UPI (Google Pay)',
     },
   });
 
   await prisma.feeInvoice.create({
     data: {
       invoiceNumber: 'INV-2026-002',
-      studentId: alexProfile.id,
-      title: 'Science Lab & Tech Facility Access',
-      amount: 320.0,
-      paidAmount: 320.0,
+      studentId: aaravProfile.id,
+      title: 'Science & Computer Science Laboratory Fee',
+      amount: 8500.0,
+      paidAmount: 8500.0,
       dueDate: '2026-08-20',
       status: 'PAID',
       paymentDate: '2026-08-19',
-      paymentMethod: 'Net Banking',
+      paymentMethod: 'Net Banking (HDFC Bank)',
     },
   });
 
   await prisma.feeInvoice.create({
     data: {
       invoiceNumber: 'INV-2026-003',
-      studentId: alexProfile.id,
-      title: 'Annual Sports & Library Subscriptions',
-      amount: 180.0,
+      studentId: aaravProfile.id,
+      title: 'Annual Sports Complex & Library Fee',
+      amount: 3500.0,
       paidAmount: 0.0,
       dueDate: '2026-09-30',
       status: 'PENDING',
     },
   });
 
-  // Sophia Chen
+  // Ananya Iyer
   await prisma.feeInvoice.create({
     data: {
       invoiceNumber: 'INV-2026-004',
-      studentId: sophiaProfile.id,
-      title: 'Fall Semester 2026 Tuition Fee',
-      amount: 1450.0,
-      paidAmount: 1450.0,
+      studentId: ananyaProfile.id,
+      title: 'Fall Semester Tuition & Academic Fee',
+      amount: 45000.0,
+      paidAmount: 45000.0,
       dueDate: '2026-08-15',
       status: 'PAID',
       paymentDate: '2026-08-10',
-      paymentMethod: 'Credit Card',
+      paymentMethod: 'UPI (PhonePe)',
     },
   });
 
-  // Marcus Rashford
+  // Rohan Verma
   await prisma.feeInvoice.create({
     data: {
       invoiceNumber: 'INV-2026-005',
-      studentId: marcusProfile.id,
-      title: 'Fall Semester 2026 Tuition Fee',
-      amount: 1450.0,
-      paidAmount: 1000.0,
+      studentId: rohanProfile.id,
+      title: 'Fall Semester Tuition & Academic Fee',
+      amount: 45000.0,
+      paidAmount: 25000.0,
       dueDate: '2026-08-15',
       status: 'PARTIAL',
       paymentDate: '2026-08-14',
-      paymentMethod: 'Cash Deposit',
+      paymentMethod: 'RuPay Card',
     },
   });
 
-  // David Kim
+  // Arjun Reddy
   await prisma.feeInvoice.create({
     data: {
       invoiceNumber: 'INV-2026-006',
-      studentId: davidProfile.id,
-      title: 'Fall Semester 2026 Tuition Fee',
-      amount: 1450.0,
+      studentId: arjunProfile.id,
+      title: 'Fall Semester Tuition & Academic Fee',
+      amount: 45000.0,
       paidAmount: 0.0,
       dueDate: '2026-08-15',
       status: 'OVERDUE',
     },
   });
 
-  // Emily & Aaliyah
+  // Diya Patel
   await prisma.feeInvoice.create({
     data: {
       invoiceNumber: 'INV-2026-007',
-      studentId: emilyProfile.id,
-      title: 'Fall Semester 2026 Tuition Fee',
-      amount: 1450.0,
-      paidAmount: 1450.0,
+      studentId: diyaProfile.id,
+      title: 'Fall Semester Tuition & Academic Fee',
+      amount: 45000.0,
+      paidAmount: 45000.0,
       dueDate: '2026-08-15',
       status: 'PAID',
       paymentDate: '2026-08-14',
-      paymentMethod: 'Bank Wire',
+      paymentMethod: 'Net Banking (SBI)',
     },
   });
 
+  // Kavya Nair
   await prisma.feeInvoice.create({
     data: {
       invoiceNumber: 'INV-2026-008',
-      studentId: aaliyahProfile.id,
-      title: 'Fall Semester 2026 Tuition Fee',
-      amount: 1450.0,
+      studentId: kavyaProfile.id,
+      title: 'Fall Semester Tuition & Academic Fee',
+      amount: 45000.0,
       paidAmount: 0.0,
       dueDate: '2026-09-25',
       status: 'PENDING',
     },
   });
 
-  console.log('Database seeded successfully!');
-  console.log('Admin user:', adminUser.email);
-  console.log('Teacher user:', teacher1User.email);
-  console.log('Student user:', createdStudents[0].user.email);
+  console.log('Database seeded with Indian names and INR amounts successfully!');
+  console.log('Admin user:', adminUser.email, adminUser.name);
+  console.log('Teacher user:', teacher1User.email, teacher1User.name);
+  console.log('Student user:', createdStudents[0].user.email, createdStudents[0].user.name);
 }
 
 main()
