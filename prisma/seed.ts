@@ -22,7 +22,7 @@ async function main() {
       name: 'Dr. Anandita Verma',
       email: 'admin@edumanage.edu.in',
       role: 'ADMIN',
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80',
     },
   });
 
@@ -32,7 +32,7 @@ async function main() {
       name: 'Prof. Rajesh Sharma',
       email: 'rajesh.sharma@edumanage.edu.in',
       role: 'TEACHER',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&auto=format&fit=crop&q=80',
     },
   });
 
@@ -41,7 +41,7 @@ async function main() {
       name: 'Dr. Sunita Rao',
       email: 'sunita.rao@edumanage.edu.in',
       role: 'TEACHER',
-      avatar: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300&auto=format&fit=crop&q=80',
     },
   });
 
@@ -50,7 +50,7 @@ async function main() {
       name: 'Ms. Priya Nair',
       email: 'priya.nair@edumanage.edu.in',
       role: 'TEACHER',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=300&auto=format&fit=crop&q=80',
     },
   });
 
@@ -176,7 +176,7 @@ async function main() {
       parentName: 'Vikram Sharma',
       parentPhone: '+91 98201 54321',
       address: 'Flat 402, Shanti Niketan, Bandra West, Mumbai',
-      avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80',
     },
     {
       name: 'Ananya Iyer',
@@ -188,7 +188,7 @@ async function main() {
       parentName: 'Suresh Iyer',
       parentPhone: '+91 98450 98765',
       address: '14, Indiranagar 100ft Road, Bengaluru',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80',
     },
     {
       name: 'Rohan Verma',
@@ -200,7 +200,7 @@ async function main() {
       parentName: 'Alok Verma',
       parentPhone: '+91 98101 65432',
       address: 'B-45, Greater Kailash Part 1, New Delhi',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80',
     },
     {
       name: 'Diya Patel',
@@ -212,7 +212,7 @@ async function main() {
       parentName: 'Mahesh Patel',
       parentPhone: '+91 98250 76543',
       address: '7, Satellite Road, Ahmedabad, Gujarat',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80',
     },
     {
       name: 'Arjun Reddy',
@@ -224,7 +224,7 @@ async function main() {
       parentName: 'Venkat Reddy',
       parentPhone: '+91 98490 87654',
       address: 'Road No 36, Jubilee Hills, Hyderabad',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80',
     },
     {
       name: 'Kavya Nair',
@@ -236,7 +236,7 @@ async function main() {
       parentName: 'Gopinath Nair',
       parentPhone: '+91 98470 98765',
       address: 'Green Meadows, Panampilly Nagar, Kochi, Kerala',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300&auto=format&fit=crop&q=80',
     },
   ];
 

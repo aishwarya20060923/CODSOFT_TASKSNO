@@ -64,7 +64,7 @@ export default async function StudentDashboardPage() {
             <img
               src={
                 student.user.avatar ||
-                'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'
+                'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80'
               }
               alt={student.user.name}
               className="w-16 h-16 md:w-20 md:h-20 rounded-2xl object-cover border-2 border-white/20 shadow-lg"
