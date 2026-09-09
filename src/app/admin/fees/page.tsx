@@ -27,8 +27,8 @@ export default async function AdminFeesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Institutional Fee Management</h1>
-        <p className="text-xs sm:text-sm text-slate-500">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Institutional Fee Management</h1>
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
           Fee invoicing, tuition clearing, and financial compliance ledgers.
         </p>
       </div>

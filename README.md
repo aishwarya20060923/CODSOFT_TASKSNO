@@ -69,13 +69,27 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 👥 Demo Accounts Pre-loaded
+## 👥 Demo Accounts & Credentials
 
-| Role | Name | Email / Roll | Key Permissions |
+### Faculty & Administration
+| Role | Name | Email | Password | Access / Permissions |
+| :--- | :--- | :--- | :--- | :--- |
+| **Administrator** | Dr. Anandita Verma | `admin@edumanage.edu.in` | *(Instant 1-Click)* | Institutional oversight, admissions, faculty appointments, fee ledgers |
+| **Teacher** | Prof. Rajesh Sharma | `rajesh.sharma@edumanage.edu.in` | *(Instant 1-Click)* | Class advisory, daily attendance register, subject-wise exam grading |
+
+### Student Portal (Multi-Student Authentication)
+*Universal Demo Password for all students:* `student123` *(or `<firstname>123`, e.g. `aarav123`)*
+
+| Student Name | Roll Number | Login Email | Distinct Test Profile Data |
 | :--- | :--- | :--- | :--- |
-| **Administrator** | Dr. Anandita Verma | `admin@edumanage.edu.in` | Full institutional oversight, admissions, faculty, and fee accounting |
-| **Teacher** | Prof. Rajesh Sharma | `rajesh.sharma@edumanage.edu.in` | Class advisory, daily attendance register, exam grading |
-| **Student** | Aarav Sharma | `STU-2026-001` | Grades transcript, attendance compliance, UPI/Net Banking fee payment portal |
+| **Aarav Sharma** | `STU-2026-001` | `aarav.sharma@student.edumanage.edu.in` | Academic Honor Roll (94%), 100% Attendance, ₹3,500 pending dues |
+| **Ananya Iyer** | `STU-2026-002` | `ananya.iyer@student.edumanage.edu.in` | Top Scorer (94.8%), 100% Attendance, All fees cleared |
+| **Rohan Verma** | `STU-2026-003` | `rohan.verma@student.edumanage.edu.in` | 81.4% GPA, 1 Medical Leave logged, ₹20,000 partial fee balance |
+| **Diya Patel** | `STU-2026-004` | `diya.patel@student.edumanage.edu.in` | 89.6% GPA, 100% Attendance, All fees cleared |
+| **Arjun Reddy** | `STU-2026-005` | `arjun.reddy@student.edumanage.edu.in` | 72.8% GPA, 2 Late arrival logs, ₹45,000 overdue tuition fee |
+| **Kavya Nair** | `STU-2026-006` | `kavya.nair@student.edumanage.edu.in` | 85% GPA, 1 Excused Absence, ₹45,000 pending fee |
+
+*Tip: In the Student Portal login screen (`/student/login`), you can either enter any student's Roll Number / Email with password `student123`, or click any of the 1-click Quick Fill student cards.*
 
 ---
 

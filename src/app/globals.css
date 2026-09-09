@@ -1,8 +1,22 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --muted-text: #64748b;
+}
+
+.dark {
+  --background: #0b1120;
+  --foreground: #f8fafc;
+  --card-bg: #131d33;
+  --card-border: #233554;
+  --muted-text: #94a3b8;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -12,15 +26,406 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
+
+/* ==========================================================================
+   EDUMANAGE COMPREHENSIVE HIGH-CONTRAST DARK MODE ENGINE
+   Preserves vibrant accents (#2563eb, #059669, #7c3aed), eliminates all white/light
+   flash elements across all components, cards, tables, inputs, and modals.
+   ========================================================================== */
+
+/* Dark Mode Base Surfaces */
+.dark body {
+  background-color: #0b1120 !important;
+  color: #f8fafc !important;
+}
+
+.dark main {
+  background-color: #0b1120 !important;
+}
+
+.dark header,
+.dark aside,
+.dark nav {
+  background-color: #131d33 !important;
+  border-color: #233554 !important;
+}
+
+/* Card & Surface Overrides (Handles base & opacity variants like /80, /60, /70) */
+.dark .bg-white,
+.dark [class*="bg-white"] {
+  background-color: #131d33 !important;
+}
+
+.dark .bg-slate-50,
+.dark [class*="bg-slate-50"] {
+  background-color: #16223b !important;
+}
+
+.dark .bg-slate-100,
+.dark [class*="bg-slate-100"] {
+  background-color: #1e293b !important;
+}
+
+.dark .bg-slate-200,
+.dark [class*="bg-slate-200"] {
+  background-color: #2a3b5c !important;
+}
+
+/* Coursework & Notice Badges / Cards (Purple) */
+.dark [class*="bg-purple-50"] {
+  background-color: rgba(168, 85, 247, 0.12) !important;
+}
+.dark [class*="bg-purple-100"] {
+  background-color: rgba(168, 85, 247, 0.18) !important;
+}
+.dark [class*="bg-purple-200"] {
+  background-color: rgba(168, 85, 247, 0.28) !important;
+}
+
+/* Faculty Announcements & Schedule Cards (Blue) */
+.dark [class*="bg-blue-50"] {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+}
+.dark [class*="bg-blue-100"] {
+  background-color: rgba(59, 130, 246, 0.18) !important;
+}
+.dark [class*="bg-blue-200"] {
+  background-color: rgba(59, 130, 246, 0.28) !important;
+}
+
+/* Success / Faculty Verification (Emerald / Green) */
+.dark [class*="bg-emerald-50"] {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+.dark [class*="bg-emerald-100"] {
+  background-color: rgba(16, 185, 129, 0.18) !important;
+}
+.dark [class*="bg-emerald-200"] {
+  background-color: rgba(16, 185, 129, 0.28) !important;
+}
+
+/* Warning & Pending Status (Amber / Orange) */
+.dark [class*="bg-amber-50"] {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+}
+.dark [class*="bg-amber-100"] {
+  background-color: rgba(245, 158, 11, 0.18) !important;
+}
+.dark [class*="bg-amber-200"] {
+  background-color: rgba(245, 158, 11, 0.28) !important;
+}
+
+/* Errors & Dues (Rose / Red) */
+.dark [class*="bg-rose-50"] {
+  background-color: rgba(244, 63, 94, 0.12) !important;
+}
+.dark [class*="bg-rose-100"] {
+  background-color: rgba(244, 63, 94, 0.18) !important;
+}
+.dark [class*="bg-rose-200"] {
+  background-color: rgba(244, 63, 94, 0.28) !important;
+}
+
+/* Admin / Management Accent (Indigo) */
+.dark [class*="bg-indigo-50"] {
+  background-color: rgba(99, 102, 241, 0.12) !important;
+}
+.dark [class*="bg-indigo-100"] {
+  background-color: rgba(99, 102, 241, 0.18) !important;
+}
+.dark [class*="bg-indigo-200"] {
+  background-color: rgba(99, 102, 241, 0.28) !important;
+}
+
+/* Dark Mode Borders & Dividers */
+.dark [class*="border-slate-100"],
+.dark [class*="border-slate-200"],
+.dark [class*="border-slate-300"] {
+  border-color: #233554 !important;
+}
+
+.dark [class*="divide-slate-100"] > :not([hidden]) ~ :not([hidden]),
+.dark [class*="divide-slate-200"] > :not([hidden]) ~ :not([hidden]) {
+  border-color: #233554 !important;
+}
+
+.dark [class*="border-purple-100"],
+.dark [class*="border-purple-200"],
+.dark [class*="border-purple-300"] {
+  border-color: rgba(168, 85, 247, 0.35) !important;
+}
+
+.dark [class*="border-blue-100"],
+.dark [class*="border-blue-200"],
+.dark [class*="border-blue-300"] {
+  border-color: rgba(59, 130, 246, 0.35) !important;
+}
+
+.dark [class*="border-emerald-100"],
+.dark [class*="border-emerald-200"],
+.dark [class*="border-emerald-300"] {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+.dark [class*="border-amber-100"],
+.dark [class*="border-amber-200"],
+.dark [class*="border-amber-300"] {
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+.dark [class*="border-rose-100"],
+.dark [class*="border-rose-200"],
+.dark [class*="border-rose-300"] {
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+.dark [class*="border-indigo-100"],
+.dark [class*="border-indigo-200"],
+.dark [class*="border-indigo-300"] {
+  border-color: rgba(99, 102, 241, 0.35) !important;
+}
+
+/* Typography & Contrast in Dark Mode */
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark [class*="text-slate-900"],
+.dark [class*="text-slate-800"] {
+  color: #f8fafc !important;
+}
+
+.dark .text-slate-700,
+.dark [class*="text-slate-700"] {
+  color: #e2e8f0 !important;
+}
+
+.dark .text-slate-600,
+.dark [class*="text-slate-600"] {
+  color: #cbd5e1 !important;
+}
+
+.dark .text-slate-500,
+.dark [class*="text-slate-500"] {
+  color: #94a3b8 !important;
+}
+
+.dark .text-slate-400,
+.dark [class*="text-slate-400"] {
+  color: #64748b !important;
+}
+
+/* Card Header & Content Accent Text in Dark Mode */
+.dark [class*="text-purple-950"],
+.dark [class*="text-purple-900"] {
+  color: #f3e8ff !important;
+}
+.dark [class*="text-purple-800"],
+.dark [class*="text-purple-700"] {
+  color: #d8b4fe !important;
+}
+.dark [class*="text-purple-600"],
+.dark [class*="text-purple-500"] {
+  color: #c084fc !important;
+}
+
+.dark [class*="text-blue-950"],
+.dark [class*="text-blue-900"] {
+  color: #eff6ff !important;
+}
+.dark [class*="text-blue-800"],
+.dark [class*="text-blue-700"] {
+  color: #bfdbfe !important;
+}
+.dark [class*="text-blue-600"],
+.dark [class*="text-blue-500"] {
+  color: #93c5fd !important;
+}
+
+.dark [class*="text-emerald-950"],
+.dark [class*="text-emerald-900"] {
+  color: #ecfdf5 !important;
+}
+.dark [class*="text-emerald-800"],
+.dark [class*="text-emerald-700"] {
+  color: #a7f3d0 !important;
+}
+.dark [class*="text-emerald-600"],
+.dark [class*="text-emerald-500"] {
+  color: #6ee7b7 !important;
+}
+
+.dark [class*="text-amber-950"],
+.dark [class*="text-amber-900"] {
+  color: #fffbeb !important;
+}
+.dark [class*="text-amber-800"],
+.dark [class*="text-amber-700"] {
+  color: #fde68a !important;
+}
+.dark [class*="text-amber-600"],
+.dark [class*="text-amber-500"] {
+  color: #fcd34d !important;
+}
+
+.dark [class*="text-rose-950"],
+.dark [class*="text-rose-900"] {
+  color: #fff1f2 !important;
+}
+.dark [class*="text-rose-800"],
+.dark [class*="text-rose-700"] {
+  color: #fecdd3 !important;
+}
+.dark [class*="text-rose-600"],
+.dark [class*="text-rose-500"] {
+  color: #fda4af !important;
+}
+
+.dark [class*="text-indigo-950"],
+.dark [class*="text-indigo-900"] {
+  color: #eef2ff !important;
+}
+.dark [class*="text-indigo-800"],
+.dark [class*="text-indigo-700"] {
+  color: #c7d2fe !important;
+}
+.dark [class*="text-indigo-600"],
+.dark [class*="text-indigo-500"] {
+  color: #a5b4fc !important;
+}
+
+/* Hover States (Prevent white/light flash on hover) */
+.dark [class*="hover:bg-slate-50"]:hover,
+.dark [class*="hover:bg-slate-100"]:hover,
+.dark [class*="hover:bg-slate-200"]:hover,
+.dark [class*="hover:bg-white"]:hover {
+  background-color: #1e293b !important;
+}
+
+.dark [class*="hover:bg-purple-50"]:hover,
+.dark [class*="hover:bg-purple-100"]:hover {
+  background-color: rgba(168, 85, 247, 0.22) !important;
+}
+
+.dark [class*="hover:bg-blue-50"]:hover,
+.dark [class*="hover:bg-blue-100"]:hover {
+  background-color: rgba(59, 130, 246, 0.22) !important;
+}
+
+.dark [class*="hover:bg-emerald-50"]:hover,
+.dark [class*="hover:bg-emerald-100"]:hover {
+  background-color: rgba(16, 185, 129, 0.22) !important;
+}
+
+.dark [class*="hover:text-slate-900"]:hover,
+.dark [class*="hover:text-slate-800"]:hover {
+  color: #ffffff !important;
+}
+
+.dark [class*="hover:border-slate-300"]:hover {
+  border-color: #3b5278 !important;
+}
+
+.dark [class*="hover:border-purple-300"]:hover {
+  border-color: rgba(168, 85, 247, 0.6) !important;
+}
+
+.dark [class*="hover:border-blue-300"]:hover {
+  border-color: rgba(59, 130, 246, 0.6) !important;
+}
+
+.dark [class*="hover:border-emerald-300"]:hover {
+  border-color: rgba(16, 185, 129, 0.6) !important;
+}
+
+/* Dark Mode Inputs, Selects, and Form Controls */
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark select,
+.dark textarea {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: #3b82f6 !important;
+  outline: none !important;
+}
+
+.dark input:disabled,
+.dark select:disabled,
+.dark textarea:disabled {
+  background-color: #0f172a !important;
+  color: #64748b !important;
+  border-color: #1e293b !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+.dark select option {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+.dark input[type="checkbox"],
+.dark input[type="radio"] {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+}
+
+/* Dark Mode Table Enhancements */
+.dark table th {
+  background-color: #0f172a !important;
+  color: #94a3b8 !important;
+  border-color: #233554 !important;
+}
+
+.dark table td {
+  border-color: #1e293b !important;
+  color: #cbd5e1 !important;
+}
+
+.dark table tbody tr:hover td {
+  background-color: #1a2744 !important;
+}
+
+/* Modals & Overlays */
+.dark .backdrop-blur-xs,
+.dark [class*="bg-slate-900/50"],
+.dark [class*="bg-slate-900/60"] {
+  background-color: rgba(3, 7, 18, 0.85) !important;
+}
+
+.dark .fixed.inset-0 > div > div,
+.dark .fixed.inset-0 .bg-white {
+  background-color: #131d33 !important;
+  border-color: #233554 !important;
+}
+
+/* Pill tags & Subject Code Badges */
+.dark code {
+  background-color: #1e293b !important;
+  color: #d8b4fe !important;
+  border-color: #334155 !important;
+}
+
+/* Shadow adjustments */
+.dark .shadow-2xs,
+.dark .shadow-xs,
+.dark .shadow-sm,
+.dark .shadow-md,
+.dark .shadow-lg,
+.dark .shadow-xl,
+.dark .shadow-2xl {
+  box-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.6) !important;
+}
+

@@ -49,8 +49,13 @@ model TeacherProfile {
   phone         String?
   qualification String?
 
-  classes       Class[]
-  subjects      Subject[]
+  classes            Class[]
+  classAssignments   TeacherClassAssignment[]
+  subjects           Subject[]
+  subjectAssignments TeacherSubjectAssignment[]
+  attendances        Attendance[]
+  assignments        Assignment[]
+  announcements      Announcement[]
 }
 
 model Class {
@@ -62,9 +67,12 @@ model Class {
   teacherId String?
   teacher   TeacherProfile? @relation(fields: [teacherId], references: [id])
 
-  students  StudentProfile[]
-  subjects  Subject[]
-  exams     Exam[]
+  teacherAssignments TeacherClassAssignment[]
+  students           StudentProfile[]
+  subjects           Subject[]
+  exams              Exam[]
+  attendances        Attendance[]
+  announcements      Announcement[]
 }
 
 model Subject {
@@ -76,20 +84,28 @@ model Subject {
   teacherId String?
   teacher   TeacherProfile? @relation(fields: [teacherId], references: [id])
 
-  marks     Mark[]
+  teacherAssignments TeacherSubjectAssignment[]
+  marks              Mark[]
+  attendances        Attendance[]
+  assignments        Assignment[]
 }
 
 model Attendance {
-  id        String         @id @default(cuid())
-  date      String         // YYYY-MM-DD
+  id        String          @id @default(cuid())
+  date      String          // YYYY-MM-DD
   studentId String
-  student   StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student   StudentProfile  @relation(fields: [studentId], references: [id], onDelete: Cascade)
   classId   String
-  status    String         // "PRESENT", "ABSENT", "LATE"
+  class     Class           @relation(fields: [classId], references: [id], onDelete: Cascade)
+  subjectId String?
+  subject   Subject?        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  teacherId String?
+  teacher   TeacherProfile? @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  status    String          // "PRESENT", "ABSENT", "LATE"
   remarks   String?
-  createdAt DateTime       @default(now())
+  createdAt DateTime        @default(now())
 
-  @@unique([studentId, date])
+  @@unique([studentId, subjectId, date])
 }
 
 model Exam {
@@ -135,3 +151,51 @@ model FeeInvoice {
   paymentMethod String?
   createdAt     DateTime       @default(now())
 }
+
+model Assignment {
+  id          String         @id @default(cuid())
+  title       String
+  description String
+  dueDate     String
+  subjectId   String
+  subject     Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  teacherId   String
+  teacher     TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  createdAt   DateTime       @default(now())
+}
+
+model Announcement {
+  id         String          @id @default(cuid())
+  title      String
+  content    String
+  category   String          @default("GENERAL") // "ACADEMIC", "EXAM", "GENERAL"
+  authorName String
+  teacherId  String?
+  teacher    TeacherProfile? @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  classId    String?
+  class      Class?          @relation(fields: [classId], references: [id], onDelete: SetNull)
+  createdAt  DateTime        @default(now())
+}
+
+model TeacherClassAssignment {
+  id        String         @id @default(cuid())
+  teacherId String
+  teacher   TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  classId   String
+  class     Class          @relation(fields: [classId], references: [id], onDelete: Cascade)
+  createdAt DateTime       @default(now())
+
+  @@unique([teacherId, classId])
+}
+
+model TeacherSubjectAssignment {
+  id        String         @id @default(cuid())
+  teacherId String
+  teacher   TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  subjectId String
+  subject   Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  createdAt DateTime       @default(now())
+
+  @@unique([teacherId, subjectId])
+}
+

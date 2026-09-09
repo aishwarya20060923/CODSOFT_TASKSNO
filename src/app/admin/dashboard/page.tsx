@@ -88,18 +88,18 @@ export default async function AdminDashboardPage() {
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {/* Total Students */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition">
+        <div className="bg-white dark:bg-[#131d33] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-md transition">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Enrolled Students
             </span>
-            <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
               <Users className="w-5 h-5" />
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-3xl font-bold text-slate-900">{totalStudents}</p>
-            <p className="text-xs text-emerald-600 font-medium mt-1 flex items-center gap-1">
+            <p className="text-3xl font-bold text-slate-900 dark:text-white">{totalStudents}</p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1 flex items-center gap-1">
               <TrendingUp className="w-3.5 h-3.5" />
               100% active standing
             </p>
@@ -107,34 +107,34 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Total Faculty */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition">
+        <div className="bg-white dark:bg-[#131d33] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-md transition">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Faculty Members
             </span>
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
               <GraduationCap className="w-5 h-5" />
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-3xl font-bold text-slate-900">{totalTeachers}</p>
-            <p className="text-xs text-slate-500 font-medium mt-1">Across 3 academic departments</p>
+            <p className="text-3xl font-bold text-slate-900 dark:text-white">{totalTeachers}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">Across 3 academic departments</p>
           </div>
         </div>
 
         {/* Attendance Rate */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition">
+        <div className="bg-white dark:bg-[#131d33] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-md transition">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Campus Attendance
             </span>
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
               <Award className="w-5 h-5" />
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-3xl font-bold text-slate-900">{attendanceRate}%</p>
-            <div className="w-full bg-slate-100 rounded-full h-1.5 mt-2 overflow-hidden">
+            <p className="text-3xl font-bold text-slate-900 dark:text-white">{attendanceRate}%</p>
+            <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 mt-2 overflow-hidden">
               <div
                 className="bg-emerald-500 h-1.5 rounded-full transition-all duration-500"
                 style={{ width: `${attendanceRate}%` }}
@@ -144,20 +144,20 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Fee Collection */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition">
+        <div className="bg-white dark:bg-[#131d33] p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-md transition">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Fee Realization
             </span>
-            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center">
               <CreditCard className="w-5 h-5" />
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-3xl font-bold text-slate-900">{formatCurrency(totalCollected)}</p>
-            <div className="flex items-center justify-between text-xs text-slate-500 mt-1">
+            <p className="text-3xl font-bold text-slate-900 dark:text-white">{formatCurrency(totalCollected)}</p>
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mt-1">
               <span>{collectionRate}% Collected</span>
-              <span className="text-rose-600 font-medium">{formatCurrency(totalPending)} due</span>
+              <span className="text-rose-600 dark:text-rose-400 font-medium">{formatCurrency(totalPending)} due</span>
             </div>
           </div>
         </div>
@@ -166,23 +166,23 @@ export default async function AdminDashboardPage() {
       {/* Two Column Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Enrolled Students */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-          <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+        <div className="lg:col-span-2 bg-white dark:bg-[#131d33] rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs overflow-hidden">
+          <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
             <div>
-              <h2 className="text-base font-bold text-slate-900">Recently Enrolled Students</h2>
-              <p className="text-xs text-slate-500">Student roster with assigned classes</p>
+              <h2 className="text-base font-bold text-slate-900 dark:text-white">Recently Enrolled Students</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Student roster with assigned classes</p>
             </div>
             <Link
               href="/admin/students"
-              className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+              className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-1"
             >
               View all directory <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="divide-y divide-slate-100 overflow-x-auto">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800 overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-xs text-slate-500 uppercase font-semibold">
+              <thead className="bg-slate-50 dark:bg-slate-800/60 text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">
                 <tr>
                   <th className="px-5 py-3">Student</th>
                   <th className="px-5 py-3">Roll No</th>
@@ -191,34 +191,34 @@ export default async function AdminDashboardPage() {
                   <th className="px-5 py-3 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {recentStudents.map((s) => (
-                  <tr key={s.id} className="hover:bg-slate-50/70 transition">
+                  <tr key={s.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition">
                     <td className="px-5 py-3.5 flex items-center gap-3">
                       <img
                         src={s.user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
                         alt={s.user.name}
-                        className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                        className="w-8 h-8 rounded-full object-cover border border-slate-200 dark:border-slate-700"
                       />
                       <div>
-                        <p className="font-semibold text-slate-900 text-sm">{s.user.name}</p>
-                        <p className="text-xs text-slate-500">{s.user.email}</p>
+                        <p className="font-semibold text-slate-900 dark:text-white text-sm">{s.user.name}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">{s.user.email}</p>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 font-mono text-xs text-slate-600 font-medium">
+                    <td className="px-5 py-3.5 font-mono text-xs text-slate-600 dark:text-slate-400 font-medium">
                       {s.rollNumber}
                     </td>
                     <td className="px-5 py-3.5">
-                      <span className="px-2.5 py-1 text-xs rounded-lg font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                      <span className="px-2.5 py-1 text-xs rounded-lg font-medium bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-900/50">
                         {s.class.name}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 text-xs text-slate-600">
-                      <p className="font-medium text-slate-800">{s.parentName || 'N/A'}</p>
-                      <p className="text-slate-400">{s.parentPhone || 'N/A'}</p>
+                    <td className="px-5 py-3.5 text-xs text-slate-600 dark:text-slate-300">
+                      <p className="font-medium text-slate-800 dark:text-slate-200">{s.parentName || 'N/A'}</p>
+                      <p className="text-slate-400 dark:text-slate-500">{s.parentPhone || 'N/A'}</p>
                     </td>
                     <td className="px-5 py-3.5 text-right">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                         Enrolled
                       </span>
                     </td>
@@ -230,13 +230,13 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Fee Collection Status */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-col justify-between">
+        <div className="bg-white dark:bg-[#131d33] rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs p-5 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-bold text-slate-900">Fee Realization</h2>
+              <h2 className="text-base font-bold text-slate-900 dark:text-white">Fee Realization</h2>
               <Link
                 href="/admin/fees"
-                className="text-xs font-semibold text-blue-600 hover:text-blue-700"
+                className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
               >
                 Invoices
               </Link>
@@ -245,10 +245,10 @@ export default async function AdminDashboardPage() {
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between text-xs font-semibold mb-1">
-                  <span className="text-slate-600">Collection Progress</span>
-                  <span className="text-slate-900">{collectionRate}%</span>
+                  <span className="text-slate-600 dark:text-slate-400">Collection Progress</span>
+                  <span className="text-slate-900 dark:text-white">{collectionRate}%</span>
                 </div>
-                <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
                   <div
                     className="bg-gradient-to-r from-blue-600 to-indigo-600 h-2.5 rounded-full"
                     style={{ width: `${collectionRate}%` }}
@@ -257,36 +257,36 @@ export default async function AdminDashboardPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-3 pt-2">
-                <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <p className="text-[11px] font-medium text-slate-500 uppercase">Total Billed</p>
-                  <p className="text-lg font-bold text-slate-900 mt-0.5">
+                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700">
+                  <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase">Total Billed</p>
+                  <p className="text-lg font-bold text-slate-900 dark:text-white mt-0.5">
                     {formatCurrency(totalBilled)}
                   </p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-emerald-50/60 border border-emerald-100">
-                  <p className="text-[11px] font-medium text-emerald-700 uppercase">Received</p>
-                  <p className="text-lg font-bold text-emerald-800 mt-0.5">
+                <div className="p-3 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/50">
+                  <p className="text-[11px] font-medium text-emerald-700 dark:text-emerald-300 uppercase">Received</p>
+                  <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200 mt-0.5">
                     {formatCurrency(totalCollected)}
                   </p>
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-amber-50/60 border border-amber-100 flex items-center justify-between">
+              <div className="p-3.5 rounded-xl bg-amber-50/60 dark:bg-amber-950/40 border border-amber-100 dark:border-amber-900/50 flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-semibold text-amber-900">Uncollected Balance</p>
-                  <p className="text-xs text-amber-700">Awaiting student clearing</p>
+                  <p className="text-xs font-semibold text-amber-900 dark:text-amber-200">Uncollected Balance</p>
+                  <p className="text-xs text-amber-700 dark:text-amber-400">Awaiting student clearing</p>
                 </div>
-                <span className="text-base font-bold text-amber-900">
+                <span className="text-base font-bold text-amber-900 dark:text-amber-200">
                   {formatCurrency(totalPending)}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-100">
-            <p className="text-xs text-slate-500 flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-slate-400" />
+          <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
               Automated financial cycle active for Fall 2026.
             </p>
           </div>
