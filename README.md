@@ -65,7 +65,7 @@ npx prisma db seed
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open https://codsoft-task1-edumanage.onrender.com/ in your browser.
 
 ---
 
