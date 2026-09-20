@@ -18,8 +18,8 @@ export default function OrderTimeline({ status }: OrderTimelineProps) {
     },
     {
       key: "ACCEPTED",
-      label: "Accepted",
-      desc: "Kitchen staff received ticket",
+      label: "Confirmed",
+      desc: "Kitchen confirmed ticket",
       icon: CheckCircle2,
     },
     {

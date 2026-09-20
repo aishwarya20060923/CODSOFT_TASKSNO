@@ -2,7 +2,7 @@
 
 import React from "react";
 import { MenuCategory } from "@/types";
-import { Search, Flame, Sparkles, Filter, X } from "lucide-react";
+import { Search, Flame, X } from "lucide-react";
 
 interface MenuFiltersProps {
   categories: MenuCategory[];
@@ -10,8 +10,10 @@ interface MenuFiltersProps {
   onSelectCategory: (slug: string) => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
-  vegOnly: boolean;
-  onToggleVeg: () => void;
+  dietaryFilter?: "all" | "veg" | "nonveg";
+  onSelectDietary?: (d: "all" | "veg" | "nonveg") => void;
+  vegOnly?: boolean;
+  onToggleVeg?: () => void;
   spicyOnly: boolean;
   onToggleSpicy: () => void;
 }
@@ -22,11 +24,29 @@ export default function MenuFilters({
   onSelectCategory,
   searchQuery,
   onSearchChange,
-  vegOnly,
+  dietaryFilter = "all",
+  onSelectDietary,
+  vegOnly = false,
   onToggleVeg,
   spicyOnly,
   onToggleSpicy,
 }: MenuFiltersProps) {
+  // Normalize dietary filter mode
+  const currentDietary = onSelectDietary
+    ? dietaryFilter
+    : vegOnly
+    ? "veg"
+    : "all";
+
+  const handleSetDietary = (val: "all" | "veg" | "nonveg") => {
+    if (onSelectDietary) {
+      onSelectDietary(val);
+    } else if (onToggleVeg) {
+      if (val === "veg" && !vegOnly) onToggleVeg();
+      if (val === "all" && vegOnly) onToggleVeg();
+    }
+  };
+
   return (
     <div className="space-y-4 mb-8">
       {/* Top Controls: Search Bar & Toggle Pills */}
@@ -45,28 +65,66 @@ export default function MenuFilters({
             <button
               onClick={() => onSearchChange("")}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              aria-label="Clear search"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Dietary Filters */}
+        {/* Dietary Filters & Spicy Toggle */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
-          <button
-            onClick={onToggleVeg}
-            className={`px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all border shrink-0 ${
-              vegOnly
-                ? "bg-emerald-50 text-emerald-800 border-emerald-300 ring-2 ring-emerald-500/20 shadow-2xs"
-                : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
-            }`}
-          >
-            <div className="w-3 h-3 rounded-xs border border-emerald-600 flex items-center justify-center">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-            </div>
-            <span>Pure Veg Only</span>
-          </button>
+          {/* Segmented Dietary Group: All | Veg | Non-Veg */}
+          <div className="inline-flex items-center bg-white border border-slate-200 rounded-2xl p-1 shadow-2xs shrink-0">
+            <button
+              onClick={() => handleSetDietary("all")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                currentDietary === "all"
+                  ? "bg-slate-900 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+              }`}
+            >
+              All
+            </button>
 
+            <button
+              onClick={() => handleSetDietary("veg")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                currentDietary === "veg"
+                  ? "bg-emerald-600 text-white shadow-xs"
+                  : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50/50"
+              }`}
+            >
+              <div className={`w-3 h-3 rounded-xs border flex items-center justify-center ${
+                currentDietary === "veg" ? "border-white" : "border-emerald-600"
+              }`}>
+                <div className={`w-1.5 h-1.5 rounded-full ${
+                  currentDietary === "veg" ? "bg-white" : "bg-emerald-600"
+                }`} />
+              </div>
+              <span>Veg</span>
+            </button>
+
+            <button
+              onClick={() => handleSetDietary("nonveg")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                currentDietary === "nonveg"
+                  ? "bg-rose-600 text-white shadow-xs"
+                  : "text-slate-600 hover:text-rose-700 hover:bg-rose-50/50"
+              }`}
+            >
+              <div className={`w-3 h-3 rounded-xs border flex items-center justify-center ${
+                currentDietary === "nonveg" ? "border-white" : "border-rose-600"
+              }`}>
+                <div className={`w-1.5 h-1.5 rounded-full ${
+                  currentDietary === "nonveg" ? "bg-white" : "bg-rose-600"
+                }`} />
+              </div>
+              <span>Non-Veg</span>
+            </button>
+          </div>
+
+          {/* Spicy Dishes Toggle */}
           <button
             onClick={onToggleSpicy}
             className={`px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all border shrink-0 ${

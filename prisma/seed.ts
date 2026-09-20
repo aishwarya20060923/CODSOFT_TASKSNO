@@ -6,6 +6,9 @@ async function main() {
   console.log("🌱 Starting DineDesk database seed (Indian Rupee / Desi Restaurant Style)...");
 
   // Clean existing tables in correct order
+  await prisma.review.deleteMany();
+  await prisma.favorite.deleteMany();
+  await prisma.coupon.deleteMany();
   await prisma.payment.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
@@ -182,6 +185,42 @@ async function main() {
         preparationTime: 15,
         categoryId: starters.id,
       },
+      {
+        name: "Crispy Dahi Ke Sholay",
+        description: "Golden crisp bread pinwheels filled with hung spiced yogurt, fresh mint, coriander, and roasted cumin.",
+        price: 240,
+        imageUrl: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: true,
+        isAvailable: true,
+        preparationTime: 12,
+        categoryId: starters.id,
+      },
+      {
+        name: "Lucknowi Hara Bhara Kebab",
+        description: "Pan-seared spinach, green pea, and cottage cheese patties infused with shahi jeera and topped with a roasted cashew.",
+        price: 230,
+        imageUrl: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: false,
+        isAvailable: true,
+        preparationTime: 10,
+        categoryId: starters.id,
+      },
+      {
+        name: "Amritsari Tandoori Soya Chaap",
+        description: "Succulent protein-rich soya chaap skewers marinated in robust Amritsari tandoori spices and charred over live charcoal.",
+        price: 270,
+        imageUrl: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: true,
+        isPopular: true,
+        isAvailable: true,
+        preparationTime: 15,
+        categoryId: starters.id,
+      },
 
       // Main Course
       {
@@ -232,6 +271,54 @@ async function main() {
         preparationTime: 22,
         categoryId: mainCourse.id,
       },
+      {
+        name: "Shahi Malai Kofta Dilkush",
+        description: "Silken dumplings of fresh cottage cheese and khoya simmered in a royal cashew nut and saffron cream gravy.",
+        price: 360,
+        imageUrl: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: true,
+        isAvailable: true,
+        preparationTime: 16,
+        categoryId: mainCourse.id,
+      },
+      {
+        name: "Dhaba Style Dal Tadka Double Chaunk",
+        description: "Yellow arhar and chana lentils simmered homestyle and tempered twice in pure desi ghee with garlic, hing, and red chillies.",
+        price: 220,
+        imageUrl: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: true,
+        isPopular: true,
+        isAvailable: true,
+        preparationTime: 12,
+        categoryId: mainCourse.id,
+      },
+      {
+        name: "Lehsuni Palak Paneer",
+        description: "Fresh garden spinach puree cooked with charred golden garlic, house-made cottage cheese cubes, and churned butter.",
+        price: 310,
+        imageUrl: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: false,
+        isAvailable: true,
+        preparationTime: 14,
+        categoryId: mainCourse.id,
+      },
+      {
+        name: "Banarasi Dum Aloo Kashmiri",
+        description: "Baby potatoes pierced and slow-cooked in rich Kashmiri red chilli, dry ginger, and aromatic fennel-seed gravy.",
+        price: 260,
+        imageUrl: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: true,
+        isPopular: false,
+        isAvailable: true,
+        preparationTime: 15,
+        categoryId: mainCourse.id,
+      },
 
       // Biryani
       {
@@ -261,6 +348,42 @@ async function main() {
       {
         name: "Royal Nawabi Subz Biryani",
         description: "Paneer, florets, carrots, and sweet peas layered with saffron basmati, mint leaves, and golden roasted cashews.",
+        price: 290,
+        imageUrl: "https://images.unsplash.com/photo-1642821373181-696a54913e9a?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: false,
+        isAvailable: true,
+        preparationTime: 16,
+        categoryId: biryani.id,
+      },
+      {
+        name: "Hyderabadi Paneer Tikka Dum Biryani",
+        description: "Smoky tandoori paneer cubes layered with saffron-infused long grain basmati rice, caramelised onions, and royal potli spices.",
+        price: 340,
+        imageUrl: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: true,
+        isPopular: true,
+        isAvailable: true,
+        preparationTime: 18,
+        categoryId: biryani.id,
+      },
+      {
+        name: "Awadhi Soya Chaap Dum Biryani",
+        description: "Juicy marinated soya chaap pieces cooked Awadhi dum style with aged Daawat basmati, fresh mint, and rose water.",
+        price: 320,
+        imageUrl: "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: true,
+        isPopular: true,
+        isAvailable: true,
+        preparationTime: 18,
+        categoryId: biryani.id,
+      },
+      {
+        name: "Mushroom & Matar Handi Biryani",
+        description: "Wild button mushrooms and tender sweet peas slow-simmered in a sealed earthen handi with fragrant green cardamom.",
         price: 290,
         imageUrl: "https://images.unsplash.com/photo-1642821373181-696a54913e9a?w=500&auto=format&fit=crop&q=80",
         isVegetarian: true,
@@ -308,6 +431,30 @@ async function main() {
         preparationTime: 12,
         categoryId: pizza.id,
       },
+      {
+        name: "Farmhouse Garden Harvest Pizza",
+        description: "Stone-baked thin crust generously loaded with crunchy bell peppers, sweet corn, black olives, red onions, and mozzarella.",
+        price: 340,
+        imageUrl: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: true,
+        isAvailable: true,
+        preparationTime: 14,
+        categoryId: pizza.id,
+      },
+      {
+        name: "Quattro Formaggi Truffle Pizza",
+        description: "Four-cheese indulgence with fresh mozzarella, smoked cheddar, aged parmesan, and gorgonzola with white truffle drizzle.",
+        price: 390,
+        imageUrl: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: false,
+        isAvailable: true,
+        preparationTime: 15,
+        categoryId: pizza.id,
+      },
 
       // Burgers
       {
@@ -346,6 +493,30 @@ async function main() {
         preparationTime: 10,
         categoryId: burgers.id,
       },
+      {
+        name: "Falafel & Herb Garlic Hummus Burger",
+        description: "Crispy herb-crusted chickpea patty layered with velvety garlic hummus, pickled cucumbers, and crisp lettuce on toasted brioche.",
+        price: 190,
+        imageUrl: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: false,
+        isAvailable: true,
+        preparationTime: 11,
+        categoryId: burgers.id,
+      },
+      {
+        name: "Smoky Portobello & Gouda Burger",
+        description: "Char-grilled whole portobello mushroom stuffed with smoked gouda, caramelised balsamic onions, and truffle aioli.",
+        price: 240,
+        imageUrl: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: true,
+        isAvailable: true,
+        preparationTime: 12,
+        categoryId: burgers.id,
+      },
 
       // Desserts
       {
@@ -380,6 +551,30 @@ async function main() {
         isVegetarian: true,
         isSpicy: false,
         isPopular: false,
+        isAvailable: true,
+        preparationTime: 5,
+        categoryId: desserts.id,
+      },
+      {
+        name: "Shahi Moong Dal Halwa",
+        description: "Slow-roasted yellow lentils cooked patiently in pure desi ghee with saffron milk, crushed cardamom, and roasted cashews.",
+        price: 170,
+        imageUrl: "https://images.unsplash.com/photo-1605197584547-c934eb01b764?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: true,
+        isAvailable: true,
+        preparationTime: 5,
+        categoryId: desserts.id,
+      },
+      {
+        name: "Matka Malai Kulfi with Falooda",
+        description: "Authentic slow-reduced whole milk kulfi served in a traditional clay pot topped with fragrant rose syrup and falooda vermicelli.",
+        price: 150,
+        imageUrl: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: true,
         isAvailable: true,
         preparationTime: 5,
         categoryId: desserts.id,
@@ -434,10 +629,34 @@ async function main() {
         preparationTime: 5,
         categoryId: beverages.id,
       },
+      {
+        name: "Kesar Badam Thandai Special",
+        description: "Festive chilled milk infused with stone-ground Californian almonds, saffron, fennel seeds, watermelon kernels, and rose water.",
+        price: 140,
+        imageUrl: "https://images.unsplash.com/photo-1546173159-315724a31696?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: false,
+        isPopular: true,
+        isAvailable: true,
+        preparationTime: 5,
+        categoryId: beverages.id,
+      },
+      {
+        name: "Desi Masala Chaas Cooler",
+        description: "Refreshing artisanal churned spiced buttermilk seasoned with roasted cumin, rock salt, ginger, and fresh garden mint.",
+        price: 70,
+        imageUrl: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop&q=80",
+        isVegetarian: true,
+        isSpicy: true,
+        isPopular: false,
+        isAvailable: true,
+        preparationTime: 5,
+        categoryId: beverages.id,
+      },
     ],
   });
 
-  console.log("🍽️ Seeded 24 Indian restaurant food items with Rupee (₹) pricing");
+  console.log("🍽️ Seeded 42 Indian restaurant food items (34 Pure Veg) with Rupee (₹) pricing");
 
   // 4. Seed Restaurant Tables (10 tables in different zones)
   const tables = await Promise.all([
@@ -709,7 +928,7 @@ async function main() {
   const tax5 = Number((sub5 * 0.05).toFixed(2)); // 44
   const tot5 = sub5 + tax5; // 924
 
-  await prisma.order.create({
+  const order5 = await prisma.order.create({
     data: {
       orderNumber: "ORD-20265",
       orderType: "DINE_IN",
@@ -758,7 +977,108 @@ async function main() {
   });
 
   console.log("📦 Seeded 5 orders in Indian Rupees (₹) with 5% GST");
-  console.log("✅ DineDesk database successfully seeded with Indian styling!");
+
+  // 7. Seed Active Promo Coupons
+  await prisma.coupon.createMany({
+    data: [
+      {
+        code: "WELCOME10",
+        description: "10% off on your entire meal order",
+        discountType: "PERCENTAGE",
+        discountValue: 10,
+        minOrderAmount: 200,
+        active: true,
+      },
+      {
+        code: "DINE20",
+        description: "20% off royal celebratory dining discount",
+        discountType: "PERCENTAGE",
+        discountValue: 20,
+        minOrderAmount: 400,
+        active: true,
+      },
+      {
+        code: "FLAT100",
+        description: "Flat ₹100 instant dining voucher",
+        discountType: "FLAT",
+        discountValue: 100,
+        minOrderAmount: 500,
+        active: true,
+      },
+    ],
+  });
+  console.log("🏷️ Seeded 3 promo coupons (WELCOME10, DINE20, FLAT100)");
+
+  // 8. Seed Customer Ratings & Reviews
+  await prisma.review.createMany({
+    data: [
+      {
+        rating: 5,
+        comment: "Incredible smoky taste with rich mint chutney! Authentic tandoor flavors.",
+        userId: customerUser.id,
+        menuItemId: paneerTikka.id,
+        orderId: order5.id,
+      },
+      {
+        rating: 5,
+        comment: "Super tender mutton and aromatic aged basmati. Best dum biryani in town!",
+        userId: customerUser.id,
+        menuItemId: muttonBiryani.id,
+        orderId: order5.id,
+      },
+      {
+        rating: 4,
+        comment: "Warm and delicious, saffron cardamom flavor was spot on.",
+        userId: customerUser.id,
+        menuItemId: gulabJamun.id,
+        orderId: order5.id,
+      },
+      {
+        rating: 5,
+        comment: "Rich velvety gravy and perfectly cooked chicken. Loved every single bite!",
+        userId: customerUser.id,
+        menuItemId: butterChicken.id,
+      },
+      {
+        rating: 5,
+        comment: "Thick, fresh Ratnagiri Alphonso mango taste, highly recommended.",
+        userId: customerUser.id,
+        menuItemId: mangoLassi.id,
+      },
+    ],
+  });
+  console.log("⭐ Seeded 5 customer ratings & reviews");
+
+  // 9. Seed Customer Wishlist / Favorites
+  await prisma.favorite.createMany({
+    data: [
+      {
+        userId: customerUser.id,
+        menuItemId: paneerTikka.id,
+      },
+      {
+        userId: customerUser.id,
+        menuItemId: muttonBiryani.id,
+      },
+      {
+        userId: customerUser.id,
+        menuItemId: mangoLassi.id,
+      },
+    ],
+  });
+  console.log("❤️ Seeded 3 customer favorite dishes");
+
+  // 10. Sample Stock Status update
+  const sampleLowStock = items.find((i) => i.name.includes("Mushroom") || i.name.includes("Aloo"));
+  if (sampleLowStock) {
+    await prisma.menuItem.update({
+      where: { id: sampleLowStock.id },
+      data: { stockStatus: "LOW_STOCK" },
+    });
+    console.log(`📦 Configured sample low stock on ${sampleLowStock.name}`);
+  }
+
+  console.log("✅ DineDesk database successfully seeded with Indian styling and enhanced features!");
 }
 
 main()

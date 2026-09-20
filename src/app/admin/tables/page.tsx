@@ -67,6 +67,36 @@ export default function AdminTablesPage() {
     }
   };
 
+  const handleQuickStatus = async (id: string, newStatus: string) => {
+    try {
+      const res = await fetch(`/api/tables/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setTables((prev) => prev.map((t) => (t.id === id ? { ...t, ...updated } : t)));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getZoneBadge = (location: string) => {
+    switch (location) {
+      case "WINDOW":
+        return { label: "Window View", bg: "bg-sky-50 text-sky-700 border-sky-200" };
+      case "OUTDOOR":
+        return { label: "Garden Terrace", bg: "bg-emerald-50 text-emerald-700 border-emerald-200" };
+      case "PRIVATE":
+        return { label: "VIP Suite", bg: "bg-purple-50 text-purple-700 border-purple-200" };
+      case "INDOOR":
+      default:
+        return { label: "Indoor Hall", bg: "bg-slate-100 text-slate-700 border-slate-200" };
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -143,59 +173,70 @@ export default function AdminTablesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {tables.map((t) => (
-            <div
-              key={t.id}
-              className="bg-white rounded-3xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono font-black text-lg text-slate-900">
-                    Table {t.tableNumber}
-                  </span>
-                  <span
-                    className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
-                      t.status === "AVAILABLE"
-                        ? "bg-emerald-100 text-emerald-800"
-                        : t.status === "OCCUPIED"
-                        ? "bg-purple-100 text-purple-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
+          {tables.map((t) => {
+            const zone = getZoneBadge(t.location);
+            return (
+              <div
+                key={t.id}
+                className="bg-white rounded-3xl border border-slate-200 p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-mono font-black text-lg text-slate-900">
+                      Table {t.tableNumber}
+                    </span>
+                    <select
+                      value={t.status}
+                      onChange={(e) => handleQuickStatus(t.id, e.target.value)}
+                      className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full border cursor-pointer focus:outline-none transition-colors ${
+                        t.status === "AVAILABLE"
+                          ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                          : t.status === "RESERVED"
+                          ? "bg-amber-50 text-amber-800 border-amber-200"
+                          : t.status === "OCCUPIED"
+                          ? "bg-purple-50 text-purple-800 border-purple-200"
+                          : "bg-red-50 text-red-800 border-red-200"
+                      }`}
+                    >
+                      <option value="AVAILABLE">Available</option>
+                      <option value="RESERVED">Reserved</option>
+                      <option value="OCCUPIED">Occupied</option>
+                      <option value="MAINTENANCE">Closed</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5 text-xs text-slate-500">
+                    <div className="flex items-center gap-1.5 font-semibold text-slate-700">
+                      <Users className="w-3.5 h-3.5 text-orange-600" />
+                      <span>{t.capacity} Guests</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${zone.bg}`}>
+                        {zone.label}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 mt-3 border-t border-slate-100 flex items-center justify-end gap-1">
+                  <button
+                    onClick={() => openEdit(t)}
+                    className="p-1.5 text-slate-500 hover:text-orange-600 hover:bg-slate-50 rounded-lg"
+                    title="Edit Table"
                   >
-                    {t.status}
-                  </span>
-                </div>
-
-                <div className="space-y-1 text-xs text-slate-500">
-                  <div className="flex items-center gap-1.5 font-semibold text-slate-700">
-                    <Users className="w-3.5 h-3.5 text-orange-600" />
-                    <span>{t.capacity} Guests</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                    <span>Zone: {t.location}</span>
-                  </div>
+                    <Edit2 className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(t.id)}
+                    className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-slate-50 rounded-lg"
+                    title="Delete Table"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
-
-              <div className="pt-4 mt-3 border-t border-slate-100 flex items-center justify-end gap-1">
-                <button
-                  onClick={() => openEdit(t)}
-                  className="p-1.5 text-slate-500 hover:text-orange-600 hover:bg-slate-50 rounded-lg"
-                  title="Edit Table"
-                >
-                  <Edit2 className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={() => handleDelete(t.id)}
-                  className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-slate-50 rounded-lg"
-                  title="Delete Table"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -264,6 +305,7 @@ export default function AdminTablesPage() {
                   className="w-full p-2.5 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
                 >
                   <option value="AVAILABLE">Available</option>
+                  <option value="RESERVED">Reserved</option>
                   <option value="OCCUPIED">Occupied (Seated)</option>
                   <option value="MAINTENANCE">Maintenance / Closed</option>
                 </select>

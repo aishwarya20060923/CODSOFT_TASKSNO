@@ -23,6 +23,8 @@ export interface MenuCategory {
   };
 }
 
+export type StockStatus = "AVAILABLE" | "LOW_STOCK" | "OUT_OF_STOCK";
+
 export interface MenuItem {
   id: string;
   name: string;
@@ -33,9 +35,13 @@ export interface MenuItem {
   isSpicy: boolean;
   isPopular: boolean;
   isAvailable: boolean;
+  stockStatus?: StockStatus;
   preparationTime: number;
   categoryId: string;
   category?: MenuCategory;
+  averageRating?: number;
+  reviewCount?: number;
+  isFavorite?: boolean;
 }
 
 export interface CartItem {
@@ -77,6 +83,8 @@ export interface Order {
   paymentStatus: PaymentStatus;
   paymentMethod: PaymentMethod;
   subtotal: number;
+  discountAmount?: number;
+  couponCode?: string | null;
   tax: number;
   totalAmount: number;
   customerName: string;
@@ -117,3 +125,38 @@ export interface Reservation {
   createdAt: string;
   updatedAt?: string;
 }
+
+export interface Review {
+  id: string;
+  rating: number;
+  comment?: string | null;
+  userId: string;
+  user?: {
+    id: string;
+    name: string;
+    avatar?: string | null;
+  };
+  menuItemId: string;
+  menuItem?: MenuItem;
+  orderId?: string | null;
+  createdAt: string;
+}
+
+export interface Favorite {
+  id: string;
+  userId: string;
+  menuItemId: string;
+  menuItem?: MenuItem;
+  createdAt: string;
+}
+
+export interface Coupon {
+  id: string;
+  code: string;
+  description: string;
+  discountType: "PERCENTAGE" | "FLAT";
+  discountValue: number;
+  minOrderAmount: number;
+  active: boolean;
+}
+

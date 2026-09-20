@@ -92,14 +92,21 @@ export async function GET() {
       ordersCount: p._sum.quantity || 0,
     }));
 
+    const pendingOrders =
+      (ordersByStatus.PLACED || 0) +
+      (ordersByStatus.ACCEPTED || 0) +
+      (ordersByStatus.PREPARING || 0);
+
     return NextResponse.json({
       totalOrders,
       todayOrders: todayOrdersCount,
+      pendingOrders,
       totalRevenue: Number(totalRevenue.toFixed(2)),
       todayRevenue: Number(todayRevenue.toFixed(2)),
       activeReservations: activeReservationsCount,
       totalCustomers: totalCustomersCount,
       ordersByStatus,
+      statusBreakdown: ordersByStatus,
       popularDishes: enrichedPopularDishes,
       recentOrders,
     });

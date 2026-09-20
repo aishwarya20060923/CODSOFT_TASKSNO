@@ -64,6 +64,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items, orderType, tableNumber, isLoaded]);
 
   const addToCart = (item: MenuItem, quantity: number = 1, specialInstructions?: string) => {
+    if (item.stockStatus === "OUT_OF_STOCK" || item.isAvailable === false) {
+      return;
+    }
     setItems((prev) => {
       const existingIndex = prev.findIndex((ci) => ci.menuItem.id === item.id);
       if (existingIndex > -1) {

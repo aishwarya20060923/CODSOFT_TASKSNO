@@ -75,6 +75,16 @@ export async function POST(req: Request) {
 
     const menuMap = new Map(dbMenuItems.map((m) => [m.id, m]));
 
+    // Verify item availability / stock
+    for (const item of dbMenuItems) {
+      if (item.stockStatus === "OUT_OF_STOCK" || !item.isAvailable) {
+        return NextResponse.json(
+          { error: `"${item.name}" is currently Out of Stock and cannot be ordered.` },
+          { status: 400 }
+        );
+      }
+    }
+
     let calculatedSubtotal = 0;
     const orderItemData = items.map((i: any) => {
       const dbItem = menuMap.get(i.menuItemId);
@@ -96,8 +106,30 @@ export async function POST(req: Request) {
     });
 
     calculatedSubtotal = Number(calculatedSubtotal.toFixed(2));
-    const tax = Number((calculatedSubtotal * TAX_RATE).toFixed(2));
-    const totalAmount = Number((calculatedSubtotal + tax).toFixed(2));
+
+    // Handle optional coupon
+    let discountAmount = 0;
+    let appliedCouponCode: string | null = null;
+    if (body.couponCode) {
+      const code = String(body.couponCode).trim().toUpperCase();
+      const coupon = await prisma.coupon.findUnique({
+        where: { code },
+      });
+
+      if (coupon && coupon.active && calculatedSubtotal >= coupon.minOrderAmount) {
+        appliedCouponCode = coupon.code;
+        if (coupon.discountType === "PERCENTAGE") {
+          discountAmount = Number(((calculatedSubtotal * coupon.discountValue) / 100).toFixed(2));
+        } else {
+          discountAmount = Number(coupon.discountValue.toFixed(2));
+        }
+        discountAmount = Math.min(discountAmount, calculatedSubtotal);
+      }
+    }
+
+    const discountedSubtotal = Math.max(0, calculatedSubtotal - discountAmount);
+    const tax = Number((discountedSubtotal * TAX_RATE).toFixed(2));
+    const totalAmount = Number((discountedSubtotal + tax).toFixed(2));
 
     const orderNumber = generateOrderNumber();
 
@@ -110,6 +142,8 @@ export async function POST(req: Request) {
         paymentStatus,
         paymentMethod,
         subtotal: calculatedSubtotal,
+        discountAmount,
+        couponCode: appliedCouponCode,
         tax,
         totalAmount,
         customerName: customerName.trim(),

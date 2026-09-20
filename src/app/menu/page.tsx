@@ -18,7 +18,7 @@ function MenuPageContent() {
   // Filter States
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
-  const [vegOnly, setVegOnly] = useState(false);
+  const [dietaryFilter, setDietaryFilter] = useState<"all" | "veg" | "nonveg">("all");
   const [spicyOnly, setSpicyOnly] = useState(false);
 
   // Sync category param if URL changes
@@ -30,28 +30,35 @@ function MenuPageContent() {
   }, [searchParams]);
 
   // Load Menu Items and Categories
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      try {
-        const [catRes, itemRes] = await Promise.all([
-          fetch("/api/categories"),
-          fetch("/api/menu"),
-        ]);
-        if (catRes.ok && itemRes.ok) {
-          const catData = await catRes.json();
-          const itemData = await itemRes.json();
-          setCategories(catData);
-          setItems(itemData);
-        }
-      } catch (err) {
-        console.error("Error fetching menu:", err);
-      } finally {
-        setLoading(false);
+  const fetchMenuData = async () => {
+    setLoading(true);
+    try {
+      const [catRes, itemRes] = await Promise.all([
+        fetch("/api/categories"),
+        fetch("/api/menu"),
+      ]);
+      if (catRes.ok && itemRes.ok) {
+        const catData = await catRes.json();
+        const itemData = await itemRes.json();
+        setCategories(catData);
+        setItems(itemData);
       }
+    } catch (err) {
+      console.error("Error fetching menu:", err);
+    } finally {
+      setLoading(false);
     }
-    fetchData();
+  };
+
+  useEffect(() => {
+    fetchMenuData();
   }, []);
+
+  const handleToggleFavorite = (itemId: string, isFav: boolean) => {
+    setItems((prev) =>
+      prev.map((it) => (it.id === itemId ? { ...it, isFavorite: isFav } : it))
+    );
+  };
 
   // Filter items in memory for instantaneous user experience
   const filteredItems = useMemo(() => {
@@ -69,8 +76,11 @@ function MenuPageContent() {
         if (!matchesName && !matchesDesc) return false;
       }
 
-      // Vegetarian filter
-      if (vegOnly && !item.isVegetarian) {
+      // Dietary filter: All, Veg, Non-Veg
+      if (dietaryFilter === "veg" && !item.isVegetarian) {
+        return false;
+      }
+      if (dietaryFilter === "nonveg" && item.isVegetarian) {
         return false;
       }
 
@@ -81,7 +91,7 @@ function MenuPageContent() {
 
       return true;
     });
-  }, [items, activeCategory, searchQuery, vegOnly, spicyOnly]);
+  }, [items, activeCategory, searchQuery, dietaryFilter, spicyOnly]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
@@ -106,8 +116,8 @@ function MenuPageContent() {
         onSelectCategory={setActiveCategory}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        vegOnly={vegOnly}
-        onToggleVeg={() => setVegOnly(!vegOnly)}
+        dietaryFilter={dietaryFilter}
+        onSelectDietary={setDietaryFilter}
         spicyOnly={spicyOnly}
         onToggleSpicy={() => setSpicyOnly(!spicyOnly)}
       />
@@ -116,14 +126,15 @@ function MenuPageContent() {
       <div className="flex items-center justify-between text-xs text-slate-500 mb-6 px-1">
         <span>
           Showing <strong>{filteredItems.length}</strong> delicacies
+          {dietaryFilter !== "all" && ` (${dietaryFilter === "veg" ? "Pure Veg" : "Non-Veg"})`}
           {activeCategory !== "all" && ` in ${categories.find(c => c.slug === activeCategory)?.name || activeCategory}`}
         </span>
-        {(searchQuery || vegOnly || spicyOnly || activeCategory !== "all") && (
+        {(searchQuery || dietaryFilter !== "all" || spicyOnly || activeCategory !== "all") && (
           <button
             onClick={() => {
               setActiveCategory("all");
               setSearchQuery("");
-              setVegOnly(false);
+              setDietaryFilter("all");
               setSpicyOnly(false);
             }}
             className="text-orange-600 font-bold hover:underline"
@@ -156,7 +167,7 @@ function MenuPageContent() {
             onClick={() => {
               setActiveCategory("all");
               setSearchQuery("");
-              setVegOnly(false);
+              setDietaryFilter("all");
               setSpicyOnly(false);
             }}
             className="px-4 py-2 bg-orange-600 text-white rounded-xl text-xs font-bold hover:bg-orange-700 transition-colors"

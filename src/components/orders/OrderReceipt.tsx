@@ -3,7 +3,7 @@
 import React from "react";
 import { Order } from "@/types";
 import { formatPrice } from "@/lib/utils";
-import { UtensilsCrossed, Printer, CheckCircle, Clock } from "lucide-react";
+import { UtensilsCrossed, Printer, CheckCircle, Clock, ShieldCheck } from "lucide-react";
 
 interface OrderReceiptProps {
   order: Order;
@@ -14,23 +14,29 @@ export default function OrderReceipt({ order }: OrderReceiptProps) {
     window.print();
   };
 
+  const discount = order.discountAmount || 0;
+
   return (
-    <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-md">
+    <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-md print:shadow-none print:border-none print:p-0">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-200 gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-orange-600 text-white flex items-center justify-center font-bold">
-            <UtensilsCrossed className="w-5 h-5" />
+          <div className="w-11 h-11 rounded-2xl bg-orange-600 text-white flex items-center justify-center font-bold shadow-md shadow-orange-600/20">
+            <UtensilsCrossed className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-black text-slate-900">DineDesk Restaurant</h2>
-            <p className="text-xs text-slate-500">Official Dining Invoice & Order Summary</p>
+            <h2 className="text-xl font-black text-slate-900 tracking-tight">
+              DineDesk Restaurant
+            </h2>
+            <p className="text-xs text-slate-500">
+              Tax Invoice & Dining Receipt • GSTIN: 29AABCD1234E1Z5
+            </p>
           </div>
         </div>
 
         <button
           onClick={handlePrint}
-          className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold self-start sm:self-auto transition-colors"
+          className="print:hidden inline-flex items-center gap-2 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold self-start sm:self-auto transition-colors"
         >
           <Printer className="w-3.5 h-3.5" />
           <span>Print Receipt</span>
@@ -40,83 +46,103 @@ export default function OrderReceipt({ order }: OrderReceiptProps) {
       {/* Info Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-b border-slate-100 text-xs">
         <div>
-          <span className="text-slate-400 block mb-0.5">Order Number</span>
-          <span className="font-bold text-slate-900 text-sm font-mono">{order.orderNumber}</span>
+          <span className="text-slate-400 block mb-0.5">Order ID</span>
+          <span className="font-bold text-slate-900 text-sm font-mono">
+            {order.orderNumber}
+          </span>
         </div>
         <div>
           <span className="text-slate-400 block mb-0.5">Date & Time</span>
           <span className="font-semibold text-slate-800">
-            {new Date(order.createdAt).toLocaleDateString("en-US", {
-              month: "short",
+            {new Date(order.createdAt).toLocaleDateString("en-IN", {
               day: "numeric",
+              month: "short",
+              year: "numeric",
               hour: "2-digit",
               minute: "2-digit",
             })}
           </span>
         </div>
         <div>
-          <span className="text-slate-400 block mb-0.5">Dining Type</span>
+          <span className="text-slate-400 block mb-0.5">Dining Format</span>
           <span className="font-bold text-orange-600">
             {order.orderType === "DINE_IN"
               ? `Dine-In (${order.tableNumber || "Table"})`
-              : "Takeaway Pickup"}
+              : "Takeaway Counter"}
           </span>
         </div>
         <div>
-          <span className="text-slate-400 block mb-0.5">Payment Status</span>
+          <span className="text-slate-400 block mb-0.5">Order Status</span>
           <span
-            className={`inline-flex items-center gap-1 font-bold px-2 py-0.5 rounded-md text-[11px] ${
-              order.paymentStatus === "PAID"
+            className={`inline-flex items-center gap-1 font-bold px-2.5 py-0.5 rounded-lg text-xs ${
+              order.status === "COMPLETED"
                 ? "bg-emerald-100 text-emerald-800"
-                : "bg-amber-100 text-amber-800"
+                : order.status === "READY"
+                ? "bg-blue-100 text-blue-800"
+                : "bg-orange-100 text-orange-800"
             }`}
           >
-            <CheckCircle className="w-3 h-3" />
-            {order.paymentStatus} ({order.paymentMethod})
+            <Clock className="w-3 h-3" />
+            {order.status}
           </span>
         </div>
       </div>
 
-      {/* Customer Info */}
-      <div className="py-4 border-b border-slate-100 text-xs flex flex-wrap gap-4 justify-between bg-slate-50/50 p-3 rounded-xl my-4">
+      {/* Customer & Payment Bar */}
+      <div className="py-3.5 border-b border-slate-100 text-xs flex flex-wrap gap-4 justify-between bg-slate-50/80 p-3.5 rounded-2xl my-4">
         <div>
-          <span className="text-slate-400">Customer: </span>
+          <span className="text-slate-400">Guest: </span>
           <strong className="text-slate-900">{order.customerName}</strong>
         </div>
         <div>
           <span className="text-slate-400">Phone: </span>
-          <span className="text-slate-700">{order.customerPhone}</span>
+          <span className="text-slate-700 font-mono">{order.customerPhone}</span>
         </div>
-        {order.customerEmail && (
-          <div>
-            <span className="text-slate-400">Email: </span>
-            <span className="text-slate-700">{order.customerEmail}</span>
-          </div>
-        )}
+        <div>
+          <span className="text-slate-400">Payment: </span>
+          <span className="font-semibold text-slate-800">
+            {order.paymentMethod} •{" "}
+            <span className="text-emerald-700 font-bold">{order.paymentStatus}</span>
+          </span>
+        </div>
       </div>
 
       {/* Items Table */}
       <div className="py-4">
         <h4 className="text-xs font-bold uppercase text-slate-400 tracking-wider mb-3">
-          Ordered Items
+          Ordered Delicacies
         </h4>
         <div className="divide-y divide-slate-100">
           {order.items.map((item) => (
-            <div key={item.id} className="py-3 flex items-start justify-between gap-4 text-sm">
+            <div
+              key={item.id}
+              className="py-3 flex items-start justify-between gap-4 text-sm"
+            >
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900">{item.quantity}x</span>
-                  <span className="font-semibold text-slate-800">{item.menuItem.name}</span>
+                  <span className="font-black text-slate-900 w-6">
+                    {item.quantity}x
+                  </span>
+                  <span className="font-bold text-slate-800">
+                    {item.menuItem.name}
+                  </span>
+                  {item.menuItem.isVegetarian ? (
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0" title="Veg" />
+                  ) : (
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-600 shrink-0" title="Non-Veg" />
+                  )}
                 </div>
                 {item.specialInstructions && (
-                  <p className="text-xs text-orange-600 italic mt-0.5 pl-6">
+                  <p className="text-xs text-orange-600 italic mt-0.5 pl-8">
                     Note: {item.specialInstructions}
                   </p>
                 )}
               </div>
               <div className="text-right">
-                <span className="font-bold text-slate-900">{formatPrice(item.totalPrice)}</span>
-                <span className="text-xs text-slate-400 block">
+                <span className="font-bold text-slate-900">
+                  {formatPrice(item.totalPrice)}
+                </span>
+                <span className="text-xs text-slate-400 block font-normal">
                   {formatPrice(item.unitPrice)} each
                 </span>
               </div>
@@ -127,26 +153,53 @@ export default function OrderReceipt({ order }: OrderReceiptProps) {
 
       {/* Order Notes */}
       {order.notes && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900 mb-6">
+        <div className="bg-amber-50 border border-amber-200/80 rounded-2xl p-3 text-xs text-amber-900 mb-6">
           <strong>Order Notes: </strong>
           <span>{order.notes}</span>
         </div>
       )}
 
-      {/* Total Calculations */}
-      <div className="bg-slate-50 rounded-2xl p-4 space-y-2 border border-slate-100 text-sm">
-        <div className="flex justify-between text-slate-600">
+      {/* Bill Computation */}
+      <div className="bg-slate-50 rounded-2xl p-4.5 space-y-2 border border-slate-100 text-xs text-slate-600">
+        <div className="flex justify-between">
           <span>Item Subtotal</span>
-          <span className="font-semibold text-slate-800">{formatPrice(order.subtotal)}</span>
+          <span className="font-bold text-slate-800 font-mono">
+            {formatPrice(order.subtotal)}
+          </span>
         </div>
-        <div className="flex justify-between text-slate-600">
+
+        {discount > 0 && (
+          <div className="flex justify-between text-emerald-700 font-bold">
+            <span>
+              Coupon Discount {order.couponCode ? `(${order.couponCode})` : ""}
+            </span>
+            <span className="font-mono">-{formatPrice(discount)}</span>
+          </div>
+        )}
+
+        <div className="flex justify-between">
           <span>5% Restaurant GST (2.5% CGST + 2.5% SGST)</span>
-          <span className="font-semibold text-slate-800">{formatPrice(order.tax)}</span>
+          <span className="font-bold text-slate-800 font-mono">
+            {formatPrice(order.tax)}
+          </span>
         </div>
-        <div className="flex justify-between text-base font-black text-slate-900 pt-2 border-t border-slate-200">
-          <span>Total Paid</span>
-          <span className="text-orange-600 text-lg">{formatPrice(order.totalAmount)}</span>
+
+        <div className="flex justify-between text-base font-black text-slate-900 pt-2.5 border-t border-slate-200">
+          <span>Final Total</span>
+          <span className="text-orange-600 text-lg font-mono">
+            {formatPrice(order.totalAmount)}
+          </span>
         </div>
+      </div>
+
+      {/* Footer */}
+      <div className="mt-6 pt-4 border-t border-slate-100 text-center text-xs text-slate-400 space-y-1">
+        <p className="font-semibold text-slate-600">
+          Thank you for dining with DineDesk!
+        </p>
+        <p className="text-[11px]">
+          450 Heritage Marg, Indiranagar, Bengaluru, Karnataka 560038 • +91 98300 12345
+        </p>
       </div>
     </div>
   );

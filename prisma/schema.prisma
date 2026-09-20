@@ -20,6 +20,8 @@ model User {
 
   orders       Order[]
   reservations Reservation[]
+  reviews      Review[]
+  favorites    Favorite[]
 }
 
 model MenuCategory {
@@ -46,6 +48,7 @@ model MenuItem {
   isSpicy         Boolean      @default(false)
   isPopular       Boolean      @default(false)
   isAvailable     Boolean      @default(true)
+  stockStatus     String       @default("AVAILABLE") // "AVAILABLE", "LOW_STOCK", "OUT_OF_STOCK"
   preparationTime Int          @default(15) // In minutes
   categoryId      String
   category        MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -53,6 +56,8 @@ model MenuItem {
   updatedAt       DateTime     @updatedAt
 
   orderItems OrderItem[]
+  reviews    Review[]
+  favorites  Favorite[]
 
   @@index([categoryId])
 }
@@ -99,6 +104,8 @@ model Order {
   paymentStatus String      @default("PENDING") // "PENDING", "PAID", "FAILED"
   paymentMethod String      @default("CARD") // "CARD", "UPI", "CASH", "SIMULATED"
   subtotal      Float
+  discountAmount Float     @default(0)
+  couponCode    String?
   tax           Float       // 5% standard restaurant tax
   totalAmount   Float
   customerName  String
@@ -145,3 +152,47 @@ model Payment {
 
   @@index([orderId])
 }
+
+model Review {
+  id         String   @id @default(cuid())
+  rating     Int      // 1 to 5
+  comment    String?
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  orderId    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, menuItemId, orderId])
+  @@index([menuItemId])
+  @@index([userId])
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, menuItemId])
+  @@index([userId])
+  @@index([menuItemId])
+}
+
+model Coupon {
+  id             String    @id @default(cuid())
+  code           String    @unique
+  description    String
+  discountType   String    @default("PERCENTAGE") // "PERCENTAGE", "FLAT"
+  discountValue  Float
+  minOrderAmount Float     @default(0)
+  active         Boolean   @default(true)
+  expiresAt      DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+

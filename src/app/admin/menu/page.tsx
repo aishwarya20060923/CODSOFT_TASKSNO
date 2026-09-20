@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { MenuItem, MenuCategory } from "@/types";
+import { MenuItem, MenuCategory, StockStatus } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import {
   UtensilsCrossed,
@@ -15,6 +15,7 @@ import {
   Sparkles,
   RefreshCw,
   Clock,
+  Package,
 } from "lucide-react";
 
 export default function AdminMenuPage() {
@@ -38,6 +39,7 @@ export default function AdminMenuPage() {
   const [formSpicy, setFormSpicy] = useState(false);
   const [formPopular, setFormPopular] = useState(false);
   const [formPrep, setFormPrep] = useState("15");
+  const [formStockStatus, setFormStockStatus] = useState<StockStatus>("AVAILABLE");
   const [formSubmitting, setFormSubmitting] = useState(false);
 
   const fetchData = async () => {
@@ -75,6 +77,7 @@ export default function AdminMenuPage() {
     setFormSpicy(false);
     setFormPopular(false);
     setFormPrep("15");
+    setFormStockStatus("AVAILABLE");
     setModalOpen(true);
   };
 
@@ -89,23 +92,32 @@ export default function AdminMenuPage() {
     setFormSpicy(item.isSpicy);
     setFormPopular(item.isPopular);
     setFormPrep(String(item.preparationTime));
+    setFormStockStatus(item.stockStatus || (item.isAvailable ? "AVAILABLE" : "OUT_OF_STOCK"));
     setModalOpen(true);
   };
 
-  const handleToggleAvailable = async (item: MenuItem) => {
+  const handleStockChange = async (item: MenuItem, newStatus: StockStatus) => {
     try {
       const res = await fetch(`/api/menu/${item.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isAvailable: !item.isAvailable }),
+        body: JSON.stringify({
+          stockStatus: newStatus,
+          isAvailable: newStatus !== "OUT_OF_STOCK",
+        }),
       });
       if (res.ok) {
         const updated = await res.json();
-        setItems((prev) => prev.map((i) => (i.id === item.id ? updated : i)));
+        setItems((prev) => prev.map((i) => (i.id === item.id ? { ...i, ...updated } : i)));
       }
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const handleToggleAvailable = async (item: MenuItem) => {
+    const nextStatus: StockStatus = item.isAvailable ? "OUT_OF_STOCK" : "AVAILABLE";
+    handleStockChange(item, nextStatus);
   };
 
   const handleDelete = async (id: string) => {
@@ -134,6 +146,8 @@ export default function AdminMenuPage() {
       isSpicy: formSpicy,
       isPopular: formPopular,
       preparationTime: formPrep,
+      stockStatus: formStockStatus,
+      isAvailable: formStockStatus !== "OUT_OF_STOCK",
     };
 
     try {
@@ -313,20 +327,25 @@ export default function AdminMenuPage() {
                     </td>
 
                     <td className="p-4 text-slate-500 font-medium">
-                      ~{item.preparationTime} mins
+                      {Math.max(5, (item.preparationTime || 15) - 5)}–{item.preparationTime || 15} mins
                     </td>
 
                     <td className="p-4">
-                      <button
-                        onClick={() => handleToggleAvailable(item)}
-                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                          item.isAvailable
-                            ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
-                            : "bg-red-100 text-red-800 hover:bg-red-200"
+                      <select
+                        value={item.stockStatus || (item.isAvailable ? "AVAILABLE" : "OUT_OF_STOCK")}
+                        onChange={(e) => handleStockChange(item, e.target.value as StockStatus)}
+                        className={`text-[11px] font-extrabold px-2.5 py-1 rounded-full border cursor-pointer focus:outline-none transition-colors ${
+                          (item.stockStatus || (item.isAvailable ? "AVAILABLE" : "OUT_OF_STOCK")) === "AVAILABLE"
+                            ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                            : (item.stockStatus || (item.isAvailable ? "AVAILABLE" : "OUT_OF_STOCK")) === "LOW_STOCK"
+                            ? "bg-amber-50 text-amber-800 border-amber-200"
+                            : "bg-red-50 text-red-800 border-red-200"
                         }`}
                       >
-                        {item.isAvailable ? "In Stock" : "Sold Out"}
-                      </button>
+                        <option value="AVAILABLE">In Stock</option>
+                        <option value="LOW_STOCK">Low Stock</option>
+                        <option value="OUT_OF_STOCK">Sold Out</option>
+                      </select>
                     </td>
 
                     <td className="p-4 text-right">
@@ -427,16 +446,18 @@ export default function AdminMenuPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Image URL</label>
-                  <input
-                    type="url"
-                    value={formImage}
-                    onChange={(e) => setFormImage(e.target.value)}
-                    placeholder="https://images.unsplash.com/..."
-                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                  />
+                  <label className="block font-semibold text-slate-700 mb-1">Stock Status *</label>
+                  <select
+                    value={formStockStatus}
+                    onChange={(e) => setFormStockStatus(e.target.value as StockStatus)}
+                    className="w-full p-2.5 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  >
+                    <option value="AVAILABLE">Available</option>
+                    <option value="LOW_STOCK">Low Stock</option>
+                    <option value="OUT_OF_STOCK">Out of Stock</option>
+                  </select>
                 </div>
 
                 <div>
@@ -446,6 +467,17 @@ export default function AdminMenuPage() {
                     value={formPrep}
                     onChange={(e) => setFormPrep(e.target.value)}
                     placeholder="15"
+                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Image URL</label>
+                  <input
+                    type="url"
+                    value={formImage}
+                    onChange={(e) => setFormImage(e.target.value)}
+                    placeholder="https://..."
                     className="w-full p-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 focus:outline-none"
                   />
                 </div>

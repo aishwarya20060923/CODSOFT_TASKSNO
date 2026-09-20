@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Order } from "@/types";
 import OrderTimeline from "@/components/orders/OrderTimeline";
 import OrderReceipt from "@/components/orders/OrderReceipt";
+import OrderReviewSection from "@/components/orders/OrderReviewSection";
 import {
   UtensilsCrossed,
   RefreshCw,
@@ -81,6 +82,13 @@ export default function OrderTrackingPage({
     );
   }
 
+  // Calculate estimated preparation time from order items
+  const maxPrep =
+    order.items && order.items.length > 0
+      ? Math.max(...order.items.map((i) => i.menuItem?.preparationTime || 15))
+      : 15;
+  const prepRange = `${Math.max(10, maxPrep - 5)}–${maxPrep} minutes`;
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
       {/* Top Breadcrumb & Live Refresh Bar */}
@@ -149,17 +157,22 @@ export default function OrderTrackingPage({
                   ? "Order has been fulfilled. Enjoy your meal!"
                   : order.status === "READY"
                   ? "Your meal is ready! Please collect it from the counter or wait for server."
-                  : "Estimated preparation time: 15–20 minutes."}
+                  : `Estimated kitchen preparation time: ~${prepRange}.`}
               </span>
             </div>
 
             <div className="hidden sm:flex items-center gap-1.5 text-orange-400 font-semibold">
               <PhoneCall className="w-3.5 h-3.5" />
-              <span>Need help? Dial +1 (555) 346-3337</span>
+              <span>DineDesk Concierge: +91 98300 12345</span>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Review Section if Completed */}
+      {order.status === "COMPLETED" && (
+        <OrderReviewSection order={order} />
+      )}
 
       {/* Detailed Receipt Breakdown */}
       <OrderReceipt order={order} />
