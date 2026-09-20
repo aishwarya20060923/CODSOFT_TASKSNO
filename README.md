@@ -104,7 +104,7 @@ You can log in manually or use the **Evaluation Quick Switch banner** at the top
    ```
 
 7. **Open in Browser**:
-   Navigate to [http://localhost:3000](http://localhost:3000)
+    https://dinedesk-codsoft-task2.onrender.com
 
 ---
 
