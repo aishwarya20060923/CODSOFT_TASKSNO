@@ -1,161 +1,173 @@
-# DineDesk — Restaurant Ordering & Table Management Platform
-### CodSoft Web Development Internship — Task 2
+# CareerHub - Modern Job Portal Web Application
+### CODSOFT Web Development Internship — Task 3
 
-![DineDesk Platform](https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&auto=format&fit=crop&q=80)
-
-**DineDesk** is an authentic Indian restaurant ordering and table management platform tailored with **Indian Rupee (₹)** pricing, **5% GST (CGST + SGST)** billing, **UPI / RuPay / Cash** payment simulations, and Indian culinary specialties.
+A clean, modern, responsive, and fully functional Job Portal web application connecting job seekers and employers. Built with Python Flask, SQLite (SQLAlchemy), and vanilla HTML5, CSS3, and JavaScript.
 
 ---
 
 ## 🌟 Key Features
 
-### 1. 🍽️ Customer Experience
-- **Digital Desi Menu**: Browse 7+ rich categories (Starters & Chaat, Main Course, Royal Biryani, Artisan Pizza, Gourmet Burgers, Mithai & Desserts, Beverages & Lassi) with Indian Rupee (₹) pricing, dietary badges (Pure Veg, Spicy, Chef's Popular), and instant item detail modals.
-- **Cart & Ordering**: Persistent cart system supporting both **Dine-In** (with table selection) and **Takeaway**, item quantity controls, custom cooking notes, and automatic **5% Restaurant GST (2.5% CGST + 2.5% SGST)** calculation.
-- **Simulated Instant Checkout**: Multi-method checkout simulation (**UPI / QR via GPay / PhonePe**, **RuPay / Cards**, **Cash at Counter**) without requiring external payment keys.
-- **5-Stage Live Order Tracking**: Real-time progress bar (`PLACED` $\to$ `ACCEPTED` $\to$ `PREPARING` $\to$ `READY` $\to$ `COMPLETED`) with auto-polling to reflect kitchen updates live.
-- **Past Order History**: Full log of customer past orders with detailed receipt breakdowns and 1-click re-ordering.
-- **Table Reservation System**: Reserve tables with date, time slot, guest counter, floor zone picker (Window, Indoor, Outdoor, Private), and **real-time double-booking collision prevention**.
+### 👤 For Candidates (Job Seekers)
+- **Browse & Search Jobs**: Explore all active job vacancies with dynamic search by keyword/title, location filter, and employment type filter (Full-time, Part-time, Remote, Contract, Internship).
+- **Detailed Job Views**: Review full role descriptions, required skills, compensation tags, and company details.
+- **Candidate Authentication**: Secure registration and login with encrypted passwords.
+- **Candidate Profile Management**: Maintain full name, contact information, skills list, education, experience, and uploaded resume.
+- **Job Applications**: 1-click application submission with duplicate application prevention.
+- **Application Status Tracking**: Live dashboard tracker showing whether applications are **Pending**, **Shortlisted**, **Selected**, or **Rejected**.
 
-### 2. 👨‍🍳 Kitchen Display System (KDS)
-- **Live Kitchen Order Board**: Real-time tickets showing order number, elapsed time, dine-in table vs takeaway, item quantities, and highlighted dietary instructions.
-- **Ticket Status Progression**: 1-click workflow actions:
-  - `PLACED` $\to$ **Accept Order** (`ACCEPTED`)
-  - `ACCEPTED` $\to$ **Start Cooking** (`PREPARING`)
-  - `PREPARING` $\to$ **Mark Ready** (`READY`)
-  - `READY` $\to$ **Complete Order** (`COMPLETED`)
-- **Queue Filters**: Switch between *All Active*, *New Incoming*, *In Prep*, *Ready for Pickup*, and *Fulfilled History*.
-- **Audio Chime**: Sound alert toggle for new incoming tickets.
-
-### 3. 🛡️ Executive Administration
-- **KPI Metrics & Analytics**: Total revenue, today's revenue, total orders, active reservations, customer count, and top 5 best-selling dishes.
-- **Menu Management**: Full CRUD to add new dishes, modify prices, upload photos, edit descriptions, and toggle stock availability on the fly.
-- **Category Taxonomy**: Add, edit, re-sequence, and delete menu categories.
-- **Table Management**: Visual floor plan by zone (Window, Indoor, Outdoor, Private), manage guest capacities, and change maintenance states.
-- **Reservation Manager**: Inspect party bookings, seat guests, update statuses (`CONFIRMED`, `SEATED`, `COMPLETED`, `CANCELLED`).
-- **Master Order Book**: Itemized order tickets, billing totals, status overrides, and printable invoices.
-- **Customer Directory**: Track registered patrons, lifetime food spend, and order history.
+### 🏢 For Recruiters (Employers)
+- **Dedicated Recruiter Portal**: Secure recruiter sign-in and account registration.
+- **Pre-seeded Demo Recruiter**: Ready-to-test recruiter account seeded automatically (`recruiter@careerhub.com` / `recruiter123`).
+- **Recruiter KPI Dashboard**: Quick overview metrics for Total Jobs Posted, Total Applications Received, Pending Reviews, and Selected Candidates.
+- **Job Management (CRUD)**:
+  - Post new job listings with titles, company, location, salary, descriptions, and required skills.
+  - Edit existing job openings.
+  - Delete obsolete job listings with confirmation guards.
+- **Application Management**:
+  - Filter applicants by specific job opening or recruitment status.
+  - Review candidate profile, email, phone number, and skills.
+  - Download or view attached resumes.
+  - Update candidate status directly (**Pending**, **Shortlisted**, **Selected**, **Rejected**).
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Technology |
-|---|---|
-| **Framework** | Next.js 16 (App Router) |
-| **Frontend** | React 19, TypeScript |
-| **Styling** | Tailwind CSS v4 |
-| **ORM & DB** | Prisma ORM 6, PostgreSQL (Neon Serverless, isolated `dinedesk` schema) |
-| **Icons** | Lucide React |
-| **State** | React Context API + LocalStorage persistence |
-
----
-
-## 🔑 Demo Login Credentials
-
-You can log in manually or use the **Evaluation Quick Switch banner** at the top of every page for instant 1-click role switching:
-
-| Role | Email | Password | Access / Dashboard |
-|---|---|---|---|
-| **Admin** | `admin@dinedesk.com` | `admin123` | `/admin` (Complete Management) |
-| **Kitchen Staff** | `kitchen@dinedesk.com` | `kitchen123` | `/kitchen` (Kitchen Display System) |
-| **Customer** | `customer@dinedesk.com` | `customer123` | `/menu`, `/reservations`, `/orders` |
-
----
-
-## 🚀 How to Run the Project (VS Code / PowerShell)
-
-### Prerequisites
-- Node.js 18+ (tested on Node v24)
-- Git & npm
-
-### Step-by-Step Instructions
-
-1. **Open PowerShell or Terminal** in the project directory:
-   ```powershell
-   cd "C:\Users\Lenovo\.gemini\antigravity\scratch\CODSOFT_TASK2_DINEDESK"
-   ```
-
-2. **Verify Environment Variables (`.env`)**:
-   Ensure `.env` contains:
-   ```env
-   DATABASE_URL="postgresql://neondb_owner:npg_WGOq7PcZRLK1@ep-dark-tree-ay6sgcj9-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require&schema=dinedesk"
-   ```
-
-3. **Install Dependencies** (already installed):
-   ```powershell
-   npm install
-   ```
-
-4. **Sync PostgreSQL Database & Generate Prisma Client**:
-   ```powershell
-   npx prisma generate
-   npx prisma db push
-   ```
-
-5. **Seed Database with Demo Dishes, Tables, Orders & Bookings**:
-   ```powershell
-   npx prisma db seed
-   ```
-
-6. **Start the Development Server**:
-   ```powershell
-   npm run dev
-   ```
-
-7. **Open in Browser**:
-    https://dinedesk-codsoft-task2.onrender.com
+| Component | Technology | Rationale |
+| :--- | :--- | :--- |
+| **Backend** | Python 3.11+, Flask 3.1+ | Lightweight, fast, easy to run locally without complex setup |
+| **Database** | SQLite + Flask-SQLAlchemy | Zero configuration, self-contained file database, clean ORM models |
+| **Frontend** | HTML5, CSS3, JavaScript (ES6) | Pure modern vanilla web technologies; responsive mobile/desktop layout |
+| **Security** | Werkzeug Security | Industry-standard password hashing (`pbkdf2:sha256`) & session cookies |
 
 ---
 
 ## 📁 Project Structure
 
 ```
-CODSOFT_TASK2_DINEDESK/
-├── prisma/
-│   ├── schema.prisma              # PostgreSQL schema with 8 models & indexes
-│   └── seed.ts                    # Realistic demo database seeder
-├── src/
-│   ├── app/
-│   │   ├── (auth)/
-│   │   │   ├── login/page.tsx     # Role login with 1-click evaluation shortcuts
-│   │   │   └── register/page.tsx  # Customer registration
-│   │   ├── (customer)/
-│   │   │   ├── page.tsx           # Restaurant Landing Page
-│   │   │   ├── menu/page.tsx      # Digital Menu with search & filters
-│   │   │   ├── cart/page.tsx      # Cart & Dine-in/Takeaway selector
-│   │   │   ├── track/[id]/        # 5-Stage Live Order Tracking
-│   │   │   ├── order-confirmation/# Order confirmation & receipt
-│   │   │   ├── orders/page.tsx    # Customer past orders & re-ordering
-│   │   │   ├── reservations/      # Table booking with conflict prevention
-│   │   │   └── profile/page.tsx   # User profile
-│   │   ├── kitchen/
-│   │   │   └── page.tsx           # Kitchen Display System (KDS)
-│   │   ├── admin/
-│   │   │   ├── page.tsx           # Admin Analytics & KPIs
-│   │   │   ├── menu/page.tsx      # Food Menu CRUD & stock toggles
-│   │   │   ├── categories/page.tsx# Category manager
-│   │   │   ├── tables/page.tsx    # Table layouts & capacities
-│   │   │   ├── reservations/page.tsx # Table booking manager
-│   │   │   ├── orders/page.tsx    # Master order ledger
-│   │   │   └── customers/page.tsx # Customer analytics
-│   │   ├── api/                   # REST API routes
-│   │   ├── layout.tsx             # Root layout with providers & banner
-│   │   └── globals.css            # Tailwind CSS styling
-│   ├── components/
-│   │   ├── layout/                # Navbar, Footer, DemoUserBanner
-│   │   ├── menu/                  # MenuCard, MenuItemModal, MenuFilters
-│   │   ├── cart/                  # CheckoutModal
-│   │   ├── orders/                # OrderTimeline, OrderReceipt
-│   │   └── kitchen/               # KitchenOrderCard
-│   ├── context/
-│   │   ├── AuthContext.tsx        # Role-based authentication state
-│   │   └── CartContext.tsx        # Persistent shopping cart state
-│   ├── lib/
-│   │   ├── prisma.ts              # Prisma client singleton
-│   │   └── utils.ts               # Formatting & ID generators
-│   └── types/
-│       └── index.ts               # TypeScript domain interfaces
-├── package.json
-└── tsconfig.json
+CODSOFT_TASK3_CAREERHUB/
+│
+├── app.py                     # Main Flask application, routes, ORM models, auth guards & seeder
+├── requirements.txt           # Python package dependencies
+├── database/
+│   └── careerhub.db           # SQLite database file (auto-generated on initial launch)
+│
+├── templates/
+│   ├── base.html              # Base layout with navbar, alerts, footer & theme styling
+│   ├── index.html             # Homepage: hero search, platform statistics, featured jobs
+│   ├── jobs.html              # Job listings directory with filters & job cards
+│   ├── job_details.html       # Full job description, required skills & apply form
+│   ├── login.html             # Candidate login page (with demo credentials helper)
+│   ├── register.html          # Candidate registration page
+│   ├── candidate_dashboard.html # Candidate portal & live application tracker
+│   ├── profile.html           # Candidate profile & resume upload editor
+│   ├── recruiter_login.html   # Recruiter login page (with 1-click demo autofill)
+│   ├── recruiter_register.html# Recruiter account signup
+│   ├── recruiter_dashboard.html # Recruiter dashboard with metrics & recent applications
+│   ├── recruiter_jobs.html    # Recruiter manage jobs: edit, delete & applicant counts
+│   ├── post_job.html          # Post new job vacancy form
+│   ├── edit_job.html          # Edit job vacancy form
+│   └── applications.html      # Recruiter candidate review board & status updater
+│
+├── static/
+│   ├── css/
+│   │   └── style.css          # Clean corporate blue theme, responsive grid/flexbox
+│   ├── js/
+│   │   └── script.js          # Navbar toggle, auto-dismissing alerts, file upload labels
+│   └── uploads/
+│       └── resumes/           # Storage directory for candidate resumes
+│
+└── README.md                  # Comprehensive project documentation
 ```
+
+---
+
+## 🚀 Quick Start Guide
+
+### 1. Prerequisites
+Ensure you have **Python 3.8+** installed on your system.
+Verify with:
+```bash
+python --version
+```
+
+### 2. Navigate to Project Directory
+```bash
+cd CODSOFT_TASK3_CAREERHUB
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Run the Application
+```bash
+python app.py
+```
+
+Open your browser and navigate to:
+👉 **`http://127.0.0.1:5000`**
+
+*(The database and 5 realistic sample jobs will be created automatically on first run!)*
+
+---
+
+## 🔑 Demo Credentials
+
+To test both sides of the recruitment portal immediately:
+
+### 🏢 Recruiter Account (Pre-seeded)
+- **Email**: `recruiter@careerhub.com`
+- **Password**: `recruiter123`
+- *Access*: Full access to Post Jobs, Manage Jobs, View Applications, and Change Application Status.
+
+### 👤 Candidate Account (Pre-seeded)
+- **Email**: `alex.seeker@example.com`
+- **Password**: `candidate123`
+- *Access*: View Dashboard, Edit Profile, Download Sample Resume, Apply for Jobs, Track Application Status.
+
+*(You can also register brand new Candidate or Recruiter accounts at any time via the registration pages!)*
+
+---
+
+## 🔄 User Workflows & Testing Guide
+
+### Candidate Workflow
+1. Go to `http://127.0.0.1:5000/`.
+2. Click **Find Jobs** to search or filter by location (e.g. *Remote*) or type (*Full-time*).
+3. Click **View Details** on any job card to read the role overview and qualifications.
+4. Click **Job Seeker Login** (or **Register**) and log in with `alex.seeker@example.com` / `candidate123`.
+5. Return to the job details page and click **Submit Application** (with an optional note).
+6. Go to **My Dashboard** to verify that your application appears under **My Submitted Applications** with status **Pending** or **Shortlisted**.
+7. Navigate to **My Profile** to update your contact details, skills, and upload a new resume.
+
+### Recruiter Workflow
+1. Click **Recruiter Portal** at top-right (or go to `http://127.0.0.1:5000/recruiter/login`).
+2. Click the green **Auto-fill Recruiter Credentials** button and submit.
+3. On the **Recruiter Dashboard**, observe:
+   - Total Jobs Posted
+   - Total Applications
+   - Pending Reviews
+   - Selected Candidates
+4. Click **Post New Job** to publish a new vacancy.
+5. Go to **Manage Jobs** to view all active openings, edit specs, or remove listings.
+6. Click **All Applications** (or select a specific job) to review applicant details and resume files.
+7. Change candidate application status via the dropdown (**Pending** ➔ **Shortlisted** ➔ **Selected** / **Rejected**).
+8. Verify that the updated status instantly reflects on both the recruiter dashboard and the candidate's dashboard!
+
+---
+
+## 🔒 Security & Validation Details
+
+- **Password Encryption**: All passwords stored using Werkzeug's secure hashing (`generate_password_hash`).
+- **Session Protection**: Custom `@login_required`, `@candidate_required`, and `@recruiter_required` route decorators.
+- **Duplicate Prevention**: Database-level unique constraint on `(job_id, candidate_id)` prevents accidental repeat applications.
+- **Upload Safety**: Filenames sanitized using `secure_filename()` with allowed extension filtering (`.pdf`, `.doc`, `.docx`, `.txt`).
+
+---
+
+## 📜 Internship Declaration
+This project is built exclusively for **CODSOFT Task 3 Web Development Internship**. It fulfills all functional specifications, UI guidelines, and architectural standards without external paid dependencies.
+Updated for CODSOFT Task 3 submission.
+
