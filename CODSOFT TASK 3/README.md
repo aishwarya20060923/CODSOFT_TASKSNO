@@ -169,3 +169,5 @@ To test both sides of the recruitment portal immediately:
 
 ## 📜 Internship Declaration
 This project is built exclusively for **CODSOFT Task 3 Web Development Internship**. It fulfills all functional specifications, UI guidelines, and architectural standards without external paid dependencies.
+Updated for CODSOFT Task 3 submission.
+
