@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Candidate Registration - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h2>Create Candidate Account</h2>
+        <p>Join CareerHub to apply for jobs and track your applications</p>
+      </div>
+
+      <form action="{{ url_for('register') }}" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="full_name">Full Name *</label>
+          <input type="text" id="full_name" name="full_name" class="form-control" placeholder="John Doe" required value="{{ full_name or '' }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address *</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" required value="{{ email or '' }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password *</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="At least 6 characters" minlength="6" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirm_password">Confirm Password *</label>
+          <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Repeat your password" minlength="6" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 10px;">
+          Create Candidate Account
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--slate-100); font-size: 0.9rem; color: var(--slate-600);">
+        Already have an account? <a href="{{ url_for('login') }}" style="font-weight: 600;">Log In</a>
+        <br><br>
+        Are you hiring? <a href="{{ url_for('recruiter_login') }}" style="color: var(--slate-700);">Switch to Recruiter Portal</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

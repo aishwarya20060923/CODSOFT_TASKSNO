@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Candidate Login - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h2>Candidate Login</h2>
+        <p>Access your dashboard, saved profile, and applications</p>
+      </div>
+
+      <!-- Quick Demo Candidate Credentials -->
+      <div class="demo-credentials-box">
+        <strong>⚡ Demo Candidate Account:</strong>
+        Email: <code>alex.seeker@example.com</code><br>
+        Password: <code>candidate123</code>
+        <div style="margin-top: 8px;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="fillCandidateDemo()" style="padding: 4px 10px; font-size: 0.75rem;">
+            Auto-fill Demo Credentials
+          </button>
+        </div>
+      </div>
+
+      <form action="{{ url_for('login', next=request.args.get('next')) }}" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input type="email" id="login-email" name="email" class="form-control" placeholder="name@example.com" required value="{{ email or '' }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" class="form-control" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 10px;">
+          Log In
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--slate-100); font-size: 0.9rem; color: var(--slate-600);">
+        Don't have a candidate account? <a href="{{ url_for('register') }}" style="font-weight: 600;">Register Now</a>
+        <br><br>
+        Looking to hire? <a href="{{ url_for('recruiter_login') }}" style="color: var(--slate-700);">Go to Recruiter Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function fillCandidateDemo() {
+  document.getElementById('login-email').value = 'alex.seeker@example.com';
+  document.getElementById('login-password').value = 'candidate123';
+}
+</script>
+{% endblock %}

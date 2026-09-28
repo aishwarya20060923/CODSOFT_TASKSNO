@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}CareerHub - Find Your Dream Job & Hire Top Talent{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <span class="hero-tagline">🚀 CODSOFT Web Development Internship Project</span>
+    <h1>Find Your <span>Dream Job</span> Today</h1>
+    <p>Connect with industry-leading companies, discover verified opportunities, and accelerate your professional career with CareerHub.</p>
+
+    <!-- Hero Search Bar -->
+    <div class="hero-search-box">
+      <form action="{{ url_for('jobs') }}" method="GET">
+        <div class="search-form-row">
+          <div class="search-input-group">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" name="q" placeholder="Job title, keywords, or skills..." aria-label="Search jobs">
+          </div>
+
+          <div class="search-input-group">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <input type="text" name="location" placeholder="City or 'Remote'..." aria-label="Location">
+          </div>
+
+          <div class="search-input-group" style="max-width: 170px;">
+            <select name="type" aria-label="Job Type">
+              <option value="All">All Types</option>
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Remote">Remote</option>
+              <option value="Contract">Contract</option>
+              <option value="Internship">Internship</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Find Jobs
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Content Section -->
+<div class="container" style="margin-top: 30px;">
+  <!-- Stats Strip -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-number">{{ total_jobs }}+</div>
+      <div class="stat-label">Active Job Openings</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ total_companies }}+</div>
+      <div class="stat-label">Partner Companies</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ total_candidates + 150 }}+</div>
+      <div class="stat-label">Registered Candidates</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Free & Functional</div>
+    </div>
+  </div>
+
+  <!-- Featured Jobs Section -->
+  <section style="margin-bottom: 60px;">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Featured Opportunities</h2>
+        <p class="section-subtitle">Explore recently published roles from hiring teams</p>
+      </div>
+      <a href="{{ url_for('jobs') }}" class="btn btn-outline btn-sm">Browse All Jobs &rarr;</a>
+    </div>
+
+    {% if featured_jobs %}
+      <div class="jobs-grid">
+        {% for job in featured_jobs %}
+          <div class="job-card">
+            <div>
+              <div class="job-card-top">
+                <span class="badge badge-blue">{{ job.job_type }}</span>
+                <span style="font-size: 0.8rem; color: var(--slate-400);">{{ job.created_at.strftime('%b %d, %Y') }}</span>
+              </div>
+              <h3 class="job-title">
+                <a href="{{ url_for('job_details', job_id=job.id) }}">{{ job.title }}</a>
+              </h3>
+              <div class="company-name">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                {{ job.company }}
+              </div>
+              <div class="job-meta-row">
+                <span class="badge badge-gray">
+                  📍 {{ job.location }}
+                </span>
+                {% if job.salary %}
+                  <span class="badge badge-gray">
+                    💰 {{ job.salary }}
+                  </span>
+                {% endif %}
+              </div>
+              <p class="job-desc-snippet">{{ job.description }}</p>
+            </div>
+
+            <div class="job-card-footer">
+              <span class="salary-tag">{{ job.salary or 'Competitive' }}</span>
+              <a href="{{ url_for('job_details', job_id=job.id) }}" class="btn btn-primary btn-sm">
+                View Details
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <h3>No jobs posted yet</h3>
+        <p>Check back later or post the first job vacancy as a recruiter.</p>
+        <a href="{{ url_for('post_job') }}" class="btn btn-primary">Post a Job</a>
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- How It Works Section -->
+  <section style="margin-bottom: 60px;">
+    <div style="text-align: center; margin-bottom: 36px;">
+      <h2 class="section-title">How CareerHub Works</h2>
+      <p class="section-subtitle">Simplified three-step workflow for candidates and recruiters</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+      <div class="content-box" style="text-align: center; padding: 32px 24px;">
+        <div style="width: 56px; height: 56px; border-radius: 50%; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.5rem; font-weight: bold;">
+          1
+        </div>
+        <h3 style="font-size: 1.15rem; margin-bottom: 8px;">Create Your Profile</h3>
+        <p style="color: var(--slate-600); font-size: 0.9rem;">Sign up in seconds, fill out your skills, education, and attach your resume.</p>
+      </div>
+
+      <div class="content-box" style="text-align: center; padding: 32px 24px;">
+        <div style="width: 56px; height: 56px; border-radius: 50%; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.5rem; font-weight: bold;">
+          2
+        </div>
+        <h3 style="font-size: 1.15rem; margin-bottom: 8px;">Discover & Apply</h3>
+        <p style="color: var(--slate-600); font-size: 0.9rem;">Search and filter by location and job type, then submit 1-click applications.</p>
+      </div>
+
+      <div class="content-box" style="text-align: center; padding: 32px 24px;">
+        <div style="width: 56px; height: 56px; border-radius: 50%; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.5rem; font-weight: bold;">
+          3
+        </div>
+        <h3 style="font-size: 1.15rem; margin-bottom: 8px;">Track Recruitment</h3>
+        <p style="color: var(--slate-600); font-size: 0.9rem;">Follow live application status updates: Pending, Shortlisted, Selected, or Rejected.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recruiter CTA Card -->
+  <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; border-radius: var(--radius-lg); padding: 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
+    <div>
+      <h2 style="font-size: 1.7rem; font-weight: 700; margin-bottom: 8px;">Are You Hiring Top Talent?</h2>
+      <p style="color: var(--slate-300); font-size: 1rem; max-width: 600px;">
+        Post job listings, manage applications, screen candidates, and streamline your recruitment pipeline on CareerHub.
+      </p>
+    </div>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+      <a href="{{ url_for('recruiter_login') }}" class="btn btn-primary" style="background-color: #2563eb;">Recruiter Login</a>
+      <a href="{{ url_for('recruiter_register') }}" class="btn btn-secondary" style="background-color: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.25);">Create Recruiter Account</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

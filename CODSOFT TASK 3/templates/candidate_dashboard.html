@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}Candidate Dashboard - CareerHub{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<div class="dashboard-header">
+  <div class="container">
+    <div class="dashboard-title-row">
+      <div>
+        <span class="badge badge-blue" style="margin-bottom: 8px;">Candidate Portal</span>
+        <h1 style="font-size: 2rem; font-weight: 800; color: var(--dark);">Welcome back, {{ user.full_name }}! 👋</h1>
+        <p style="color: var(--slate-600); margin-top: 4px;">Track your submitted job applications and explore new opportunities.</p>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <a href="{{ url_for('profile') }}" class="btn btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          Edit Profile
+        </a>
+        <a href="{{ url_for('jobs') }}" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          Search Jobs
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Top Summary Cards -->
+  <div class="metrics-grid">
+    <div class="metric-box">
+      <div class="metric-icon-wrap metric-icon-blue">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      </div>
+      <div>
+        <div class="metric-val">{{ applications|length }}</div>
+        <div class="metric-lbl">Total Applications</div>
+      </div>
+    </div>
+
+    <div class="metric-box">
+      <div class="metric-icon-wrap metric-icon-amber">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <div class="metric-val">
+          {{ applications | selectattr('status', 'equalto', 'Pending') | list | length }}
+        </div>
+        <div class="metric-lbl">Under Review</div>
+      </div>
+    </div>
+
+    <div class="metric-box">
+      <div class="metric-icon-wrap metric-icon-purple">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <div>
+        <div class="metric-val">
+          {{ applications | selectattr('status', 'equalto', 'Shortlisted') | list | length }}
+        </div>
+        <div class="metric-lbl">Shortlisted</div>
+      </div>
+    </div>
+
+    <div class="metric-box">
+      <div class="metric-icon-wrap metric-icon-green">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <div class="metric-val">
+          {{ applications | selectattr('status', 'equalto', 'Selected') | list | length }}
+        </div>
+        <div class="metric-lbl">Selected Offers</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Quick Status Banner -->
+  <div class="content-box" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; background-color: #f8fafc; border-left: 4px solid var(--primary);">
+    <div>
+      <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 4px;">Candidate Profile Status</h3>
+      <p style="color: var(--slate-600); font-size: 0.9rem;">
+        Email: <strong>{{ user.email }}</strong> | 
+        Phone: <strong>{{ profile.phone or 'Not provided' }}</strong> | 
+        Resume: <strong>{{ profile.resume_filename or 'No resume uploaded' }}</strong>
+      </p>
+    </div>
+    <a href="{{ url_for('profile') }}" class="btn btn-outline btn-sm">Update Profile & Resume</a>
+  </div>
+
+  <!-- Applications Table -->
+  <div class="content-box">
+    <div class="section-header" style="margin-bottom: 16px;">
+      <div>
+        <h2 class="section-title" style="font-size: 1.35rem;">My Submitted Applications</h2>
+        <p class="section-subtitle">Real-time status tracking for positions you applied to</p>
+      </div>
+      <a href="{{ url_for('jobs') }}" class="btn btn-outline btn-sm">Find More Jobs</a>
+    </div>
+
+    {% if applications %}
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Job Title</th>
+              <th>Company</th>
+              <th>Location</th>
+              <th>Applied Date</th>
+              <th>Attached Resume</th>
+              <th>Recruitment Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in applications %}
+              <tr>
+                <td>
+                  <strong>
+                    <a href="{{ url_for('job_details', job_id=app.job.id) }}" style="color: var(--dark);">
+                      {{ app.job.title }}
+                    </a>
+                  </strong>
+                  <div style="font-size: 0.8rem; color: var(--slate-400);">{{ app.job.job_type }}</div>
+                </td>
+                <td>{{ app.job.company }}</td>
+                <td><span class="badge badge-gray">📍 {{ app.job.location }}</span></td>
+                <td>{{ app.applied_at.strftime('%b %d, %Y') }}</td>
+                <td>
+                  {% if app.resume_filename %}
+                    <span style="font-size: 0.85rem; color: var(--slate-600);">
+                      📄 {{ app.resume_filename }}
+                    </span>
+                  {% else %}
+                    <span style="font-size: 0.85rem; color: var(--slate-400);">Standard CV</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <span class="badge badge-status status-{{ app.status|lower }}">
+                    {{ app.status }}
+                  </span>
+                </td>
+                <td>
+                  <a href="{{ url_for('job_details', job_id=app.job.id) }}" class="btn btn-secondary btn-sm">
+                    View Job
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h3>No applications yet</h3>
+        <p>You haven't submitted any job applications. Browse open listings and apply with your profile.</p>
+        <a href="{{ url_for('jobs') }}" class="btn btn-primary">Browse Available Jobs</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Recommended Jobs -->
+  {% if recent_jobs %}
+    <div style="margin-top: 36px;">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title" style="font-size: 1.35rem;">Recommended Opportunities For You</h2>
+          <p class="section-subtitle">Fresh openings matched to current hiring demands</p>
+        </div>
+        <a href="{{ url_for('jobs') }}" class="btn btn-outline btn-sm">Explore All &rarr;</a>
+      </div>
+
+      <div class="jobs-grid">
+        {% for r_job in recent_jobs %}
+          <div class="job-card">
+            <div>
+              <div class="job-card-top">
+                <span class="badge badge-blue">{{ r_job.job_type }}</span>
+                <span style="font-size: 0.8rem; color: var(--slate-400);">{{ r_job.created_at.strftime('%b %d') }}</span>
+              </div>
+              <h3 class="job-title">
+                <a href="{{ url_for('job_details', job_id=r_job.id) }}">{{ r_job.title }}</a>
+              </h3>
+              <div class="company-name">{{ r_job.company }}</div>
+              <div class="job-meta-row">
+                <span class="badge badge-gray">📍 {{ r_job.location }}</span>
+                {% if r_job.salary %}
+                  <span class="badge badge-gray">💰 {{ r_job.salary }}</span>
+                {% endif %}
+              </div>
+              <p class="job-desc-snippet">{{ r_job.description }}</p>
+            </div>
+            <div class="job-card-footer">
+              <span class="salary-tag">{{ r_job.salary or 'Competitive' }}</span>
+              <a href="{{ url_for('job_details', job_id=r_job.id) }}" class="btn btn-primary btn-sm">View & Apply</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

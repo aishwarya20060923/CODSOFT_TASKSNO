@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Posted Jobs - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 36px;">
+  <!-- Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+    <div>
+      <a href="{{ url_for('recruiter_dashboard') }}" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; margin-bottom: 8px;">
+        &larr; Back to Dashboard
+      </a>
+      <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--dark); margin-bottom: 4px;">My Posted Jobs</h1>
+      <p style="color: var(--slate-600);">Monitor active job listings, view applicant counts, and edit job specs.</p>
+    </div>
+    <a href="{{ url_for('post_job') }}" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Post New Job
+    </a>
+  </div>
+
+  <div class="content-box">
+    {% if jobs %}
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Job Title</th>
+              <th>Company</th>
+              <th>Type</th>
+              <th>Location</th>
+              <th>Salary</th>
+              <th>Applications</th>
+              <th>Date Posted</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for job in jobs %}
+              <tr>
+                <td>
+                  <strong>
+                    <a href="{{ url_for('job_details', job_id=job.id) }}" style="color: var(--dark);">
+                      {{ job.title }}
+                    </a>
+                  </strong>
+                </td>
+                <td>{{ job.company }}</td>
+                <td><span class="badge badge-blue">{{ job.job_type }}</span></td>
+                <td>📍 {{ job.location }}</td>
+                <td>{{ job.salary or 'Competitive' }}</td>
+                <td>
+                  <a href="{{ url_for('view_applications', job_id=job.id) }}" class="badge {% if job.applications|length > 0 %}badge-blue{% else %}badge-gray{% endif %}" style="font-size: 0.85rem;">
+                    👥 {{ job.applications|length }} candidates
+                  </a>
+                </td>
+                <td>{{ job.created_at.strftime('%b %d, %Y') }}</td>
+                <td>
+                  <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                    <a href="{{ url_for('view_applications', job_id=job.id) }}" class="btn btn-outline btn-sm" title="View Applications">
+                      Applicants
+                    </a>
+                    <a href="{{ url_for('edit_job', job_id=job.id) }}" class="btn btn-secondary btn-sm" title="Edit Job">
+                      Edit
+                    </a>
+                    <form action="{{ url_for('delete_job', job_id=job.id) }}" method="POST" class="confirm-delete-form" style="display: inline;">
+                      <button type="submit" class="btn btn-danger btn-sm" title="Delete Job">
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+        <h3>No jobs posted yet</h3>
+        <p>You haven't posted any job openings under your recruiter account.</p>
+        <a href="{{ url_for('post_job') }}" class="btn btn-primary">Post Your First Job</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

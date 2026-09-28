@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}{{ job.title }} at {{ job.company }} - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 28px;">
+  <!-- Breadcrumbs -->
+  <div style="margin-bottom: 20px;">
+    <a href="{{ url_for('jobs') }}" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; font-weight: 500;">
+      &larr; Back to all jobs
+    </a>
+  </div>
+
+  <div class="job-detail-layout">
+    <!-- Left Main Column -->
+    <div>
+      <div class="job-main-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <span class="badge badge-blue" style="margin-bottom: 8px;">{{ job.job_type }}</span>
+            <h1 style="font-size: 2rem; font-weight: 800; color: var(--dark); line-height: 1.2;">{{ job.title }}</h1>
+            <div class="company-name" style="font-size: 1.1rem; margin-top: 6px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              {{ job.company }}
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div class="salary-tag" style="font-size: 1.25rem; color: var(--primary);">{{ job.salary or 'Competitive' }}</div>
+            <div style="font-size: 0.85rem; color: var(--slate-400); margin-top: 4px;">
+              Posted on {{ job.created_at.strftime('%B %d, %Y') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="job-meta-row" style="margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--slate-100);">
+          <span class="badge badge-gray">📍 Location: {{ job.location }}</span>
+          <span class="badge badge-gray">💼 Employment: {{ job.job_type }}</span>
+          <span class="badge badge-gray">🏢 Recruiter: {{ job.recruiter.full_name }}</span>
+        </div>
+
+        <!-- Description -->
+        <h3 class="detail-section-title">About the Role & Company</h3>
+        <div style="color: var(--slate-700); line-height: 1.8; font-size: 1rem; white-space: pre-line;">
+          {{ job.description }}
+        </div>
+
+        <!-- Requirements -->
+        {% if job.requirements %}
+          <h3 class="detail-section-title">Required Skills & Qualifications</h3>
+          <div style="color: var(--slate-700); line-height: 1.7; margin-bottom: 16px;">
+            {{ job.requirements }}
+          </div>
+
+          <div class="skills-pill-group">
+            {% for skill in job.requirements.split(',') %}
+              {% if skill.strip() %}
+                <span class="skill-pill">✓ {{ skill.strip() }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Right Sidebar Column: Apply Box -->
+    <div>
+      <div class="job-sidebar-card">
+        <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--dark); margin-bottom: 16px;">
+          Job Application
+        </h3>
+
+        {% if not current_user %}
+          <!-- Unauthenticated User -->
+          <div style="text-align: center; padding: 12px 0;">
+            <p style="color: var(--slate-600); font-size: 0.95rem; margin-bottom: 18px;">
+              Sign in with your CareerHub candidate account to submit your application with one click.
+            </p>
+            <a href="{{ url_for('login', next=request.url) }}" class="btn btn-primary btn-block" style="margin-bottom: 10px;">
+              Log In to Apply
+            </a>
+            <a href="{{ url_for('register') }}" class="btn btn-secondary btn-block">
+              Register New Candidate
+            </a>
+          </div>
+
+        {% elif current_user.role == 'recruiter' %}
+          <!-- Logged in as Recruiter -->
+          <div style="background-color: var(--slate-100); border-radius: var(--radius-md); padding: 16px; text-align: center;">
+            <p style="font-size: 0.9rem; color: var(--slate-700); margin-bottom: 12px;">
+              You are signed in with a <strong>Recruiter</strong> account.
+            </p>
+            {% if job.recruiter_id == current_user.id %}
+              <p style="font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-bottom: 14px;">
+                You posted this job vacancy.
+              </p>
+              <a href="{{ url_for('edit_job', job_id=job.id) }}" class="btn btn-primary btn-block btn-sm" style="margin-bottom: 8px;">Edit Listing</a>
+              <a href="{{ url_for('view_applications', job_id=job.id) }}" class="btn btn-outline btn-block btn-sm">View Applicants</a>
+            {% else %}
+              <a href="{{ url_for('recruiter_dashboard') }}" class="btn btn-outline btn-block btn-sm">Back to Dashboard</a>
+            {% endif %}
+          </div>
+
+        {% elif already_applied %}
+          <!-- Already Applied -->
+          <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); padding: 20px; text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 8px;">✅</div>
+            <h4 style="color: #166534; font-size: 1.1rem; font-weight: 700; margin-bottom: 4px;">Application Submitted</h4>
+            <p style="color: #15803d; font-size: 0.85rem; margin-bottom: 14px;">
+              You applied on {{ candidate_app.applied_at.strftime('%b %d, %Y') }}
+            </p>
+            <div style="margin-bottom: 16px;">
+              <span style="font-size: 0.85rem; color: var(--slate-600); display: block; margin-bottom: 4px;">Current Status:</span>
+              <span class="badge badge-status status-{{ candidate_app.status|lower }}">
+                {{ candidate_app.status }}
+              </span>
+            </div>
+            <a href="{{ url_for('candidate_dashboard') }}" class="btn btn-outline btn-block btn-sm">
+              Track on Dashboard
+            </a>
+          </div>
+
+        {% else %}
+          <!-- Candidate Ready to Apply Form -->
+          <form action="{{ url_for('apply_job', job_id=job.id) }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+              <label class="form-label">Applying As</label>
+              <input type="text" class="form-control" value="{{ current_user.full_name }}" disabled style="background-color: var(--slate-100);">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Your Email</label>
+              <input type="email" class="form-control" value="{{ current_user.email }}" disabled style="background-color: var(--slate-100);">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Resume / CV</label>
+              {% if current_user.profile and current_user.profile.resume_filename %}
+                <div style="background: var(--slate-100); padding: 10px; border-radius: var(--radius-sm); font-size: 0.85rem; margin-bottom: 8px; color: var(--slate-700);">
+                  📄 Current Profile Resume: <strong>{{ current_user.profile.resume_filename }}</strong>
+                </div>
+              {% endif %}
+              <input type="file" name="resume" class="form-control" accept=".pdf,.doc,.docx,.txt">
+              <p class="form-hint file-chosen-text" style="display: none;"></p>
+              <p class="form-hint">Attach a new resume or leave empty to use your profile resume.</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Note for Hiring Manager (Optional)</label>
+              <textarea name="cover_note" class="form-control" rows="3" placeholder="Briefly state why you are a great fit..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              Submit Application
+            </button>
+          </form>
+        {% endif %}
+
+        <!-- Quick Summary -->
+        <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--slate-100); font-size: 0.85rem; color: var(--slate-500);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span>Job ID:</span>
+            <strong>#{{ job.id }}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span>Employment Type:</span>
+            <strong>{{ job.job_type }}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Location:</span>
+            <strong>{{ job.location }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other Jobs Section -->
+      {% if related_jobs %}
+        <div style="margin-top: 24px;">
+          <h4 style="font-size: 1rem; font-weight: 700; color: var(--slate-700); margin-bottom: 12px;">More Openings</h4>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            {% for r_job in related_jobs %}
+              <div class="content-box" style="padding: 16px; margin-bottom: 0;">
+                <h5 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 4px;">
+                  <a href="{{ url_for('job_details', job_id=r_job.id) }}">{{ r_job.title }}</a>
+                </h5>
+                <p style="font-size: 0.85rem; color: var(--slate-500);">{{ r_job.company }} &bull; {{ r_job.location }}</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

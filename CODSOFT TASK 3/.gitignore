@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+
+static/uploads/resumes/*
+database/*.db
+instance/
+
+.env
+venv/
+.venv/

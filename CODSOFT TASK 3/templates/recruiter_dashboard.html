@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block title %}Recruiter Dashboard - CareerHub{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<div class="dashboard-header">
+  <div class="container">
+    <div class="dashboard-title-row">
+      <div>
+        <span class="badge badge-role" style="margin-bottom: 8px;">Recruitment Command Center</span>
+        <h1 style="font-size: 2rem; font-weight: 800; color: var(--dark);">Recruiter Dashboard</h1>
+        <p style="color: var(--slate-600); margin-top: 4px;">Welcome, <strong>{{ recruiter.full_name }}</strong> &bull; {{ recruiter.email }}</p>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="{{ url_for('post_job') }}" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Post New Job
+        </a>
+        <a href="{{ url_for('recruiter_jobs') }}" class="btn btn-secondary">
+          Manage Jobs
+        </a>
+        <a href="{{ url_for('view_applications') }}" class="btn btn-secondary">
+          All Applications
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Key Recruiter Metrics Cards -->
+  <div class="metrics-grid">
+    <div class="metric-box">
+      <div class="metric-icon-wrap metric-icon-blue">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      </div>
+      <div>
+        <div class="metric-val">{{ total_jobs }}</div>
+        <div class="metric-lbl">Total Jobs Posted</div>
+      </div>
+    </div>
+
+    <div class="metric-box">
+      <div class="metric-icon-wrap metric-icon-purple">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+      </div>
+      <div>
+        <div class="metric-val">{{ total_applications }}</div>
+        <div class="metric-lbl">Total Applications</div>
+      </div>
+    </div>
+
+    <div class="metric-box">
+      <div class="metric-icon-wrap metric-icon-amber">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <div class="metric-val">{{ pending_applications }}</div>
+        <div class="metric-lbl">Pending Review</div>
+      </div>
+    </div>
+
+    <div class="metric-box">
+      <div class="metric-icon-wrap metric-icon-green">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <div class="metric-val">{{ selected_candidates }}</div>
+        <div class="metric-lbl">Selected Candidates</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Applications Review -->
+  <div class="content-box">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" style="font-size: 1.35rem;">Recent Candidate Applications</h2>
+        <p class="section-subtitle">Review incoming resumes and update hiring status directly</p>
+      </div>
+      <a href="{{ url_for('view_applications') }}" class="btn btn-outline btn-sm">View All Applications &rarr;</a>
+    </div>
+
+    {% if recent_applications %}
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Candidate</th>
+              <th>Applied For</th>
+              <th>Applied Date</th>
+              <th>Resume</th>
+              <th>Current Status</th>
+              <th>Update Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in recent_applications %}
+              <tr>
+                <td>
+                  <strong>{{ app.candidate.full_name }}</strong>
+                  <div style="font-size: 0.8rem; color: var(--slate-500);">
+                    {{ app.candidate.email }}
+                    {% if app.candidate.profile and app.candidate.profile.phone %}
+                      &bull; {{ app.candidate.profile.phone }}
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <strong>
+                    <a href="{{ url_for('job_details', job_id=app.job.id) }}" style="color: var(--dark);">
+                      {{ app.job.title }}
+                    </a>
+                  </strong>
+                  <div style="font-size: 0.8rem; color: var(--slate-500);">{{ app.job.location }}</div>
+                </td>
+                <td>{{ app.applied_at.strftime('%b %d, %Y') }}</td>
+                <td>
+                  {% if app.resume_filename %}
+                    <a href="{{ url_for('download_resume', filename=app.resume_filename) }}" class="btn btn-secondary btn-sm" style="font-size: 0.8rem;">
+                      📄 {{ app.resume_filename|truncate(18, True, '...') }}
+                    </a>
+                  {% else %}
+                    <span style="font-size: 0.8rem; color: var(--slate-400);">Not attached</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <span class="badge badge-status status-{{ app.status|lower }}">
+                    {{ app.status }}
+                  </span>
+                </td>
+                <td>
+                  <form action="{{ url_for('update_application_status', app_id=app.id) }}" method="POST" style="display: flex; gap: 6px;">
+                    <select name="status" class="form-control" style="padding: 4px 8px; font-size: 0.85rem; width: 130px;" onchange="this.form.submit()">
+                      <option value="Pending" {% if app.status == 'Pending' %}selected{% endif %}>Pending</option>
+                      <option value="Shortlisted" {% if app.status == 'Shortlisted' %}selected{% endif %}>Shortlisted</option>
+                      <option value="Selected" {% if app.status == 'Selected' %}selected{% endif %}>Selected</option>
+                      <option value="Rejected" {% if app.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                    </select>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <h3>No applications received yet</h3>
+        <p>When candidates apply for your posted jobs, their resumes and details will appear here for review.</p>
+        <a href="{{ url_for('post_job') }}" class="btn btn-primary">Post a New Job</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- My Posted Jobs Quick Preview -->
+  <div class="content-box">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" style="font-size: 1.35rem;">My Active Job Postings</h2>
+        <p class="section-subtitle">Manage, edit, or remove your open vacancies</p>
+      </div>
+      <a href="{{ url_for('recruiter_jobs') }}" class="btn btn-outline btn-sm">Manage All Jobs &rarr;</a>
+    </div>
+
+    {% if my_jobs %}
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Job Title</th>
+              <th>Type</th>
+              <th>Location</th>
+              <th>Applicants</th>
+              <th>Posted Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for job in my_jobs %}
+              <tr>
+                <td>
+                  <strong>
+                    <a href="{{ url_for('job_details', job_id=job.id) }}" style="color: var(--dark);">
+                      {{ job.title }}
+                    </a>
+                  </strong>
+                </td>
+                <td><span class="badge badge-blue">{{ job.job_type }}</span></td>
+                <td>📍 {{ job.location }}</td>
+                <td>
+                  <a href="{{ url_for('view_applications', job_id=job.id) }}" class="badge badge-gray" style="text-decoration: underline;">
+                    {{ job.applications|length }} candidates
+                  </a>
+                </td>
+                <td>{{ job.created_at.strftime('%b %d, %Y') }}</td>
+                <td>
+                  <div style="display: flex; gap: 8px;">
+                    <a href="{{ url_for('edit_job', job_id=job.id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                    <a href="{{ url_for('view_applications', job_id=job.id) }}" class="btn btn-outline btn-sm">Applicants</a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <p>You have not posted any jobs yet.</p>
+        <a href="{{ url_for('post_job') }}" class="btn btn-primary btn-sm">Create First Job</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

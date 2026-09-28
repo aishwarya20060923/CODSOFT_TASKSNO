@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Browse All Jobs - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 36px;">
+  <!-- Page Header -->
+  <div style="margin-bottom: 24px;">
+    <h1 style="font-size: 2rem; font-weight: 800; color: var(--dark); margin-bottom: 6px;">Find Your Next Role</h1>
+    <p style="color: var(--slate-600);">Search among active opportunities and apply directly to hiring teams.</p>
+  </div>
+
+  <!-- Filter Card -->
+  <div class="filter-card">
+    <form action="{{ url_for('jobs') }}" method="GET">
+      <div class="filter-grid">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label" for="search-input">Search Title or Keyword</label>
+          <input type="text" id="search-input" name="q" class="form-control" placeholder="e.g. Developer, Python, Designer..." value="{{ query_text }}">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label" for="location-select">Location</label>
+          <input type="text" id="location-select" name="location" class="form-control" placeholder="e.g. Bengaluru, Pune, Hyderabad, Remote..." value="{{ location_filter }}" list="location-options">
+          <datalist id="location-options">
+            {% for loc in locations %}
+              <option value="{{ loc }}">
+            {% endfor %}
+          </datalist>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label" for="type-select">Job Type</label>
+          <select id="type-select" name="type" class="form-control">
+            <option value="All" {% if not type_filter or type_filter == 'All' %}selected{% endif %}>All Types</option>
+            <option value="Full-time" {% if type_filter == 'Full-time' %}selected{% endif %}>Full-time</option>
+            <option value="Part-time" {% if type_filter == 'Part-time' %}selected{% endif %}>Part-time</option>
+            <option value="Remote" {% if type_filter == 'Remote' %}selected{% endif %}>Remote</option>
+            <option value="Contract" {% if type_filter == 'Contract' %}selected{% endif %}>Contract</option>
+            <option value="Internship" {% if type_filter == 'Internship' %}selected{% endif %}>Internship</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-self: flex-end;">
+          <button type="submit" class="btn btn-primary" style="height: 42px;">
+            Filter
+          </button>
+          {% if query_text or location_filter or (type_filter and type_filter != 'All') %}
+            <a href="{{ url_for('jobs') }}" class="btn btn-secondary" style="height: 42px;" title="Reset filters">
+              Reset
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Results Count -->
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+    <p style="color: var(--slate-600); font-size: 0.95rem;">
+      Showing <strong>{{ jobs|length }}</strong> available {% if jobs|length == 1 %}position{% else %}positions{% endif %}
+      {% if query_text %} for "<em>{{ query_text }}</em>"{% endif %}
+      {% if location_filter %} in "<em>{{ location_filter }}</em>"{% endif %}
+      {% if type_filter and type_filter != 'All' %} ({{ type_filter }}){% endif %}
+    </p>
+  </div>
+
+  <!-- Job Cards Grid -->
+  {% if jobs %}
+    <div class="jobs-grid">
+      {% for job in jobs %}
+        <div class="job-card">
+          <div>
+            <div class="job-card-top">
+              <span class="badge badge-blue">{{ job.job_type }}</span>
+              <span style="font-size: 0.8rem; color: var(--slate-400);">{{ job.created_at.strftime('%b %d, %Y') }}</span>
+            </div>
+            
+            <h3 class="job-title">
+              <a href="{{ url_for('job_details', job_id=job.id) }}">{{ job.title }}</a>
+            </h3>
+            
+            <div class="company-name">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              {{ job.company }}
+            </div>
+
+            <div class="job-meta-row">
+              <span class="badge badge-gray">📍 {{ job.location }}</span>
+              {% if job.salary %}
+                <span class="badge badge-gray">💰 {{ job.salary }}</span>
+              {% endif %}
+            </div>
+
+            <p class="job-desc-snippet">{{ job.description }}</p>
+
+            {% if job.requirements %}
+              <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px;">
+                {% for skill in job.requirements.split(',')[:3] %}
+                  <span style="font-size: 0.75rem; background: var(--slate-100); color: var(--slate-600); padding: 3px 8px; border-radius: 4px;">
+                    {{ skill.strip() }}
+                  </span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="job-card-footer">
+            <span class="salary-tag">{{ job.salary or 'Negotiable' }}</span>
+            <a href="{{ url_for('job_details', job_id=job.id) }}" class="btn btn-primary btn-sm">
+              View Details
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <h3>No matching jobs found</h3>
+      <p>Try modifying your search keywords or removing filters to see all available vacancies.</p>
+      <a href="{{ url_for('jobs') }}" class="btn btn-outline">Clear All Filters</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

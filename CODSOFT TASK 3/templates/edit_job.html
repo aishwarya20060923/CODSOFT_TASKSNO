@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Job: {{ job.title }} - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 36px; max-width: 800px;">
+  <!-- Header -->
+  <div style="margin-bottom: 24px;">
+    <a href="{{ url_for('recruiter_jobs') }}" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; margin-bottom: 12px;">
+      &larr; Back to My Jobs
+    </a>
+    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--dark); margin-bottom: 6px;">Edit Job Listing</h1>
+    <p style="color: var(--slate-600);">Modify job vacancy details, requirements, or compensation.</p>
+  </div>
+
+  <div class="content-box">
+    <form action="{{ url_for('edit_job', job_id=job.id) }}" method="POST">
+      <!-- Title & Company -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label" for="title">Job Title *</label>
+          <input type="text" id="title" name="title" class="form-control" value="{{ job.title }}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="company">Company Name *</label>
+          <input type="text" id="company" name="company" class="form-control" value="{{ job.company }}" required>
+        </div>
+      </div>
+
+      <!-- Location, Type, Salary -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label" for="location">Location *</label>
+          <input type="text" id="location" name="location" class="form-control" value="{{ job.location }}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="job_type">Employment Type</label>
+          <select id="job_type" name="job_type" class="form-control">
+            <option value="Full-time" {% if job.job_type == 'Full-time' %}selected{% endif %}>Full-time</option>
+            <option value="Part-time" {% if job.job_type == 'Part-time' %}selected{% endif %}>Part-time</option>
+            <option value="Remote" {% if job.job_type == 'Remote' %}selected{% endif %}>Remote</option>
+            <option value="Contract" {% if job.job_type == 'Contract' %}selected{% endif %}>Contract</option>
+            <option value="Internship" {% if job.job_type == 'Internship' %}selected{% endif %}>Internship</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="salary">Compensation / Salary</label>
+          <input type="text" id="salary" name="salary" class="form-control" value="{{ job.salary or '' }}">
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label class="form-label" for="description">Job Description *</label>
+        <textarea id="description" name="description" class="form-control" rows="6" required>{{ job.description }}</textarea>
+      </div>
+
+      <!-- Requirements & Skills -->
+      <div class="form-group">
+        <label class="form-label" for="requirements">Required Skills & Qualifications</label>
+        <textarea id="requirements" name="requirements" class="form-control" rows="3">{{ job.requirements or '' }}</textarea>
+      </div>
+
+      <!-- Buttons -->
+      <div style="display: flex; gap: 12px; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--slate-100);">
+        <a href="{{ url_for('recruiter_jobs') }}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

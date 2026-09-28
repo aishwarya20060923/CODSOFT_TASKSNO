@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Candidate Applications - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 36px;">
+  <!-- Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+    <div>
+      <a href="{{ url_for('recruiter_dashboard') }}" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; margin-bottom: 8px;">
+        &larr; Back to Dashboard
+      </a>
+      <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--dark); margin-bottom: 4px;">Candidate Applications</h1>
+      <p style="color: var(--slate-600);">Screen applicants, review qualifications, and update recruitment progress.</p>
+    </div>
+  </div>
+
+  <!-- Filter Strip -->
+  <div class="filter-card" style="margin-bottom: 24px;">
+    <form action="{{ url_for('view_applications') }}" method="GET">
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-end;">
+        <div class="form-group" style="margin-bottom: 0; min-width: 260px; flex: 1;">
+          <label class="form-label" for="filter-job">Filter by Job Posting</label>
+          <select id="filter-job" name="job_id" class="form-control" onchange="this.form.submit()">
+            <option value="">All My Jobs ({{ my_jobs|length }})</option>
+            {% for j in my_jobs %}
+              <option value="{{ j.id }}" {% if selected_job_id == j.id %}selected{% endif %}>
+                {{ j.title }} ({{ j.applications|length }} applicants)
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0; min-width: 180px;">
+          <label class="form-label" for="filter-status">Filter by Status</label>
+          <select id="filter-status" name="status" class="form-control" onchange="this.form.submit()">
+            <option value="All" {% if not selected_status or selected_status == 'All' %}selected{% endif %}>All Statuses</option>
+            <option value="Pending" {% if selected_status == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="Shortlisted" {% if selected_status == 'Shortlisted' %}selected{% endif %}>Shortlisted</option>
+            <option value="Selected" {% if selected_status == 'Selected' %}selected{% endif %}>Selected</option>
+            <option value="Rejected" {% if selected_status == 'Rejected' %}selected{% endif %}>Rejected</option>
+          </select>
+        </div>
+
+        <div>
+          <a href="{{ url_for('view_applications') }}" class="btn btn-secondary" style="height: 42px;">
+            Reset Filters
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Applications Table -->
+  <div class="content-box">
+    <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+      <span style="font-weight: 600; color: var(--slate-700);">
+        Showing {{ applications|length }} applicant{% if applications|length != 1 %}s{% endif %}
+      </span>
+    </div>
+
+    {% if applications %}
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Candidate Name</th>
+              <th>Contact Details</th>
+              <th>Applied For</th>
+              <th>Date</th>
+              <th>Resume</th>
+              <th>Current Status</th>
+              <th>Change Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in applications %}
+              <tr>
+                <td>
+                  <strong>{{ app.candidate.full_name }}</strong>
+                  {% if app.candidate.profile and app.candidate.profile.skills %}
+                    <div style="font-size: 0.75rem; color: var(--slate-500); margin-top: 2px;">
+                      Skills: {{ app.candidate.profile.skills|truncate(35, True, '...') }}
+                    </div>
+                  {% endif %}
+                </td>
+                <td>
+                  <div style="font-size: 0.85rem;">
+                    <div>📧 {{ app.candidate.email }}</div>
+                    {% if app.candidate.profile and app.candidate.profile.phone %}
+                      <div style="color: var(--slate-500); margin-top: 2px;">📞 {{ app.candidate.profile.phone }}</div>
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <strong>
+                    <a href="{{ url_for('job_details', job_id=app.job.id) }}" style="color: var(--dark);">
+                      {{ app.job.title }}
+                    </a>
+                  </strong>
+                  <div style="font-size: 0.8rem; color: var(--slate-500);">{{ app.job.company }}</div>
+                </td>
+                <td>{{ app.applied_at.strftime('%b %d, %Y') }}</td>
+                <td>
+                  {% if app.resume_filename %}
+                    <a href="{{ url_for('download_resume', filename=app.resume_filename) }}" class="btn btn-secondary btn-sm" style="font-size: 0.8rem; white-space: nowrap;">
+                      📄 Download
+                    </a>
+                  {% else %}
+                    <span style="font-size: 0.8rem; color: var(--slate-400);">Not attached</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <span class="badge badge-status status-{{ app.status|lower }}">
+                    {{ app.status }}
+                  </span>
+                </td>
+                <td>
+                  <!-- Interactive Status Update Form -->
+                  <form action="{{ url_for('update_application_status', app_id=app.id) }}" method="POST">
+                    <select name="status" class="form-control" style="padding: 6px 8px; font-size: 0.85rem; width: 140px; cursor: pointer;" onchange="this.form.submit()">
+                      <option value="Pending" {% if app.status == 'Pending' %}selected{% endif %}>🟡 Pending</option>
+                      <option value="Shortlisted" {% if app.status == 'Shortlisted' %}selected{% endif %}>🔵 Shortlisted</option>
+                      <option value="Selected" {% if app.status == 'Selected' %}selected{% endif %}>🟢 Selected</option>
+                      <option value="Rejected" {% if app.status == 'Rejected' %}selected{% endif %}>🔴 Rejected</option>
+                    </select>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <svg class="empty-state-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <h3>No applications match criteria</h3>
+        <p>No candidate submissions were found for the selected job or status filter.</p>
+        <a href="{{ url_for('view_applications') }}" class="btn btn-outline">Clear Filters</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Post a New Job - CareerHub{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 36px; max-width: 800px;">
+  <!-- Header -->
+  <div style="margin-bottom: 24px;">
+    <a href="{{ url_for('recruiter_dashboard') }}" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; margin-bottom: 12px;">
+      &larr; Back to Recruiter Dashboard
+    </a>
+    <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--dark); margin-bottom: 6px;">Post a New Job Vacancy</h1>
+    <p style="color: var(--slate-600);">Publish an opportunity to attract qualified candidates across CareerHub.</p>
+  </div>
+
+  <div class="content-box">
+    <form action="{{ url_for('post_job') }}" method="POST">
+      <!-- Title & Company -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label" for="title">Job Title *</label>
+          <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Senior Backend Engineer" required value="{{ form_data.title if form_data else '' }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="company">Company Name *</label>
+          <input type="text" id="company" name="company" class="form-control" placeholder="e.g. Acme Corp" required value="{{ form_data.company if form_data else '' }}">
+        </div>
+      </div>
+
+      <!-- Location, Type, Salary -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label" for="location">Location *</label>
+          <input type="text" id="location" name="location" class="form-control" placeholder="e.g. Bengaluru, Pune, Hyderabad, or Remote" required value="{{ form_data.location if form_data else '' }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="job_type">Employment Type</label>
+          <select id="job_type" name="job_type" class="form-control">
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Remote">Remote</option>
+            <option value="Contract">Contract</option>
+            <option value="Internship">Internship</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="salary">Compensation / Salary</label>
+          <input type="text" id="salary" name="salary" class="form-control" placeholder="e.g. ₹8 - 12 LPA or ₹25,000/month" value="{{ form_data.salary if form_data else '' }}">
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label class="form-label" for="description">Job Description *</label>
+        <textarea id="description" name="description" class="form-control" rows="6" placeholder="Provide details about the role, team, day-to-day responsibilities, and company mission..." required>{{ form_data.description if form_data else '' }}</textarea>
+      </div>
+
+      <!-- Requirements & Skills -->
+      <div class="form-group">
+        <label class="form-label" for="requirements">Required Skills & Qualifications</label>
+        <textarea id="requirements" name="requirements" class="form-control" rows="3" placeholder="e.g. Python, SQL, REST APIs, Git, Team Collaboration">{{ form_data.requirements if form_data else '' }}</textarea>
+        <p class="form-hint">Tip: Comma-separated skills will render as interactive filter tags on the job card.</p>
+      </div>
+
+      <!-- Buttons -->
+      <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--slate-100);">
+        <a href="{{ url_for('recruiter_jobs') }}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">
+          Publish Job Vacancy
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
